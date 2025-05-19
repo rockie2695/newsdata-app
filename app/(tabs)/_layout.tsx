@@ -1,7 +1,32 @@
 import { Tabs } from "expo-router";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { View } from "react-native";
+
+interface TabBarIconProps {
+  focused: boolean;
+  color: string;
+  iconName?: string;
+}
+
+const TabBarIcon = ({
+  focused,
+  color,
+  iconName = "newspaper",
+}: TabBarIconProps) => {
+  return (
+    <View
+      className={`${
+        focused ? "bg-cyan-500" : "bg-transparent"
+      } px-2 py-[2px] rounded-md w-12 flex items-center justify-center`}
+    >
+      <FontAwesome5
+        name={iconName}
+        color={focused ? "white" : color}
+        size={24}
+      />
+    </View>
+  );
+};
 
 export default function TabLayout() {
   return (
@@ -17,17 +42,7 @@ export default function TabLayout() {
         options={{
           title: "News",
           tabBarIcon: ({ color, focused }) => (
-            <View
-              className={`${
-                focused ? "bg-cyan-500" : "bg-transparent"
-              } px-2 py-[2px] rounded-md w-12 flex items-center justify-center`}
-            >
-              <FontAwesome5
-                name={"newspaper"}
-                color={focused ? "white" : color}
-                size={24}
-              />
-            </View>
+            <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
         }}
       />
@@ -36,17 +51,7 @@ export default function TabLayout() {
         options={{
           title: "Search",
           tabBarIcon: ({ color, focused }) => (
-            <View
-              className={`${
-                focused ? "bg-cyan-500" : "bg-transparent"
-              } px-2 py-[2px] rounded-md w-12 flex items-center justify-center`}
-            >
-              <FontAwesome5
-                name={"search"}
-                color={focused ? "white" : color}
-                size={24}
-              />
-            </View>
+            <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
         }}
       />
