@@ -17,12 +17,12 @@ const TabBarIcon = ({
     <View
       className={`${
         focused ? "bg-cyan-500" : "bg-transparent"
-      } px-2 py-[2px] rounded-md w-12 flex items-center justify-center`}
+      } px-2 py-[2px] rounded-md w-10 flex items-center justify-center transition-colors`}
     >
       <FontAwesome5
         name={iconName}
         color={focused ? "white" : color}
-        size={24}
+        size={20}
       />
     </View>
   );
@@ -35,6 +35,7 @@ export default function TabLayout() {
         animation: "shift",
         tabBarActiveTintColor: "rgb(6 182 212)",
         tabBarInactiveTintColor: "rgb(107 114 128)",
+        tabBarLabelStyle: { fontSize: 12 },
       }}
     >
       <Tabs.Screen
@@ -44,6 +45,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
+          tabBarIconStyle: { height: 24 },
         }}
       />
       <Tabs.Screen
@@ -53,6 +55,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
+          tabBarIconStyle: { height: 24 },
         }}
       />
     </Tabs>
