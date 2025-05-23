@@ -5,9 +5,12 @@ import { StatusBar } from "expo-status-bar";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      {/* <Stack.Screen name="search" options={{ title: "Search" }} /> */}
-    </Stack>
+    <>
+      <Stack screenOptions={{ navigationBarColor: "black" }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="search" options={{ title: "Search" }} /> */}
+      </Stack>
+      <StatusBar style="auto" />
+    </>
   );
 }

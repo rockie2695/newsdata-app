@@ -16,12 +16,12 @@ const TabBarIcon = ({
     <View
       className={`${
         focused ? "bg-cyan-500" : "bg-transparent"
-      } px-2 py-[2px] rounded-xl w-10 flex items-center justify-center transition-colors`}
+      } px-2 py-[2px] rounded-2xl w-14 flex items-center justify-center transition-colors`}
     >
       <FontAwesome5
         name={iconName}
         color={focused ? "white" : color}
-        size={20}
+        size={24}
       />
     </View>
   );
