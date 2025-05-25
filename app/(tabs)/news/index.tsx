@@ -19,7 +19,14 @@ export default function Index() {
         renderItem={({ item, index }) => (
           <>
             <Link href={item.path} asChild>
-              <Pressable className="px-4 py-2">
+              <Pressable
+                className="px-4 py-2"
+                android_ripple={{
+                  borderless: false,
+                  radius: 50,
+                  color: "#67e8f9",
+                }}
+              >
                 <Text className="text-base">{item.name}</Text>
               </Pressable>
             </Link>
