@@ -29,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="news/index"
+        name="news"
         options={{
           title: "News",
           tabBarIcon: ({ color, focused }) => (
@@ -46,6 +46,13 @@ export default function TabLayout() {
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
           tabBarIconStyle: { height: 26 },
+        }}
+      />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "Index",
+          href: null,
         }}
       />
     </Tabs>
