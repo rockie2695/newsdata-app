@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useFocusEffect } from "expo-router";
 import { useFetchReactQuery } from "@/hook/useReactQuery";
 import slides from "@/scripts/slides";
 
@@ -9,7 +9,18 @@ export default function CategoryScreen() {
     ["category", category as string],
     slides(category as string, 6)
   );
-  console.log(isPending, error, data);
+  console.log(category, isPending, error, data);
+  useFocusEffect(() => {
+    console.log('here1')
+    const onBeforeUnload = (e: any) => {
+      // run your cleanup code here
+      console.log("here check");
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+    };
+  });
   return (
     <View>
       <Text>Category screen {category}</Text>

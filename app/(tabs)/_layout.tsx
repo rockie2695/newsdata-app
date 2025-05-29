@@ -1,6 +1,7 @@
 import TabBarIcon from "@/components/TabBarIcon";
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { Pressable, View } from "react-native";
+import { useEffect } from "react";
 
 export default function TabLayout() {
   return (
@@ -48,6 +49,7 @@ export default function TabLayout() {
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
           tabBarIconStyle: { height: 25 },
+          href: "/search",
         }}
       />
       <Tabs.Screen
