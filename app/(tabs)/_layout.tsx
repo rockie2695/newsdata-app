@@ -36,7 +36,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
-          tabBarIconStyle: { height: 26 },
+          tabBarIconStyle: { height: 25 },
+          href: "/news",
         }}
       />
       <Tabs.Screen
@@ -46,7 +47,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
-          tabBarIconStyle: { height: 26 },
+          tabBarIconStyle: { height: 25 },
         }}
       />
       <Tabs.Screen
