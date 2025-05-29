@@ -8,17 +8,13 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         //headerShown: false,
-        animation: "none",
+        tabBarStyle: { height: 102 },
         tabBarActiveTintColor: "rgb(6 182 212)",
         tabBarInactiveTintColor: "rgb(107 114 128)",
         tabBarLabelStyle: { fontSize: 12 },
         tabBarButton: ({ children, ...props }) => (
           <Pressable
-            onPress={props.onPress}
-            onPressIn={props.onPressIn}
-            onPressOut={props.onPressOut}
-            style={props.style}
-            disabled={props.disabled}
+            {...props}
             android_ripple={{
               borderless: false,
               radius: 50,
@@ -37,8 +33,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
-          tabBarIconStyle: { height: 25 },
-          href: "/news",
+          tabBarIconStyle: { height: 28 },
+          // href: "/news",
         }}
       />
       <Tabs.Screen
@@ -48,8 +44,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
-          tabBarIconStyle: { height: 25 },
-          href: "/search",
+          tabBarIconStyle: { height: 28 },
+          // href: "/search",
         }}
       />
       <Tabs.Screen
