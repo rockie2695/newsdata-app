@@ -16,9 +16,9 @@ export default function CategoryScreen() {
       // run your cleanup code here
       console.log("here check");
     };
-    window.addEventListener("beforeunload", onBeforeUnload);
+    // window.addEventListener("beforeunload", onBeforeUnload);
     return () => {
-      window.removeEventListener("beforeunload", onBeforeUnload);
+      // window.removeEventListener("beforeunload", onBeforeUnload);
     };
   });
   return (
