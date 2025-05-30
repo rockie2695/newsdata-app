@@ -1,14 +1,15 @@
 import TabBarIcon from "@/components/TabBarIcon";
 import { Tabs, useRouter } from "expo-router";
 import { Pressable, View } from "react-native";
-import { useEffect } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
   return (
     <Tabs
       screenOptions={{
         //headerShown: false,
-        tabBarStyle: { height: 102 },
+        tabBarStyle: { height: 60 + insets.bottom },
         tabBarActiveTintColor: "rgb(6 182 212)",
         tabBarInactiveTintColor: "rgb(107 114 128)",
         tabBarLabelStyle: { fontSize: 12 },
@@ -33,7 +34,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
-          tabBarIconStyle: { height: 28 },
+          tabBarIconStyle: { height: 28, width: 56 },
           // href: "/news",
         }}
       />
@@ -44,7 +45,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),
-          tabBarIconStyle: { height: 28 },
+          tabBarIconStyle: { height: 28, width: 56 },
           // href: "/search",
         }}
       />
