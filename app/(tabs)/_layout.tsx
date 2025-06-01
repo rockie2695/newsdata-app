@@ -1,6 +1,6 @@
 import TabBarIcon from "@/components/TabBarIcon";
-import { Tabs, useRouter } from "expo-router";
-import { Pressable, View } from "react-native";
+import { Tabs } from "expo-router";
+import { Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
@@ -9,7 +9,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         //headerShown: false,
-        tabBarStyle: { height: 60 + insets.bottom },
+        tabBarStyle: { height: 52 + insets.bottom },
         tabBarActiveTintColor: "rgb(6 182 212)",
         tabBarInactiveTintColor: "rgb(107 114 128)",
         tabBarLabelStyle: { fontSize: 12 },

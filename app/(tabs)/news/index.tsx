@@ -2,7 +2,6 @@ import { useFetchReactQuery } from "@/hook/useReactQuery";
 import slides from "@/scripts/slides";
 import {
   Animated,
-  Dimensions,
   FlatList,
   Image,
   Pressable,
@@ -10,8 +9,10 @@ import {
   View,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  useWindowDimensions,
 } from "react-native";
 import { Key, useRef, useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
 export default function Index() {
   const categories = [
     { name: "Home", category: "home" },
@@ -32,7 +33,7 @@ export default function Index() {
   );
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const screenWidth = Dimensions.get("window").width;
+  const screenWidth = useWindowDimensions().width;
   const [activeIndex, setActiveIndex] = useState<number>(0);
   console.log(isPending, error, slidesData);
 
@@ -45,9 +46,16 @@ export default function Index() {
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
         <View style={{ width: screenWidth }} className="aspect-video">
           <Image source={{ uri: item.image_url }} className="w-full h-full" />
-          <Text className="absolute w-full bottom-0 left-0 text-white text-lg font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
-            {item.title}
-          </Text>
+          <LinearGradient
+            // Background Linear Gradient from bottom to top
+            colors={["rgba(0,0,0,1)", "rgba(0,0,0,0.1)"]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          >
+            <Text className="absolute w-full bottom-[5px] left-0 text-white text-lg font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
+              {item.title}
+            </Text>
+          </LinearGradient>
         </View>
       </Pressable>
     );
@@ -55,12 +63,12 @@ export default function Index() {
 
   const DotPagination = ({ activeIndex }: { activeIndex: number }) => {
     return (
-      <View className="flex-row items-center">
+      <View className="flex flex-row items-center justify-center h-4 absolute w-full bottom-0 left-0 bg-black">
         {slidesData?.success?.map((_: any, index: Key | null | undefined) => (
           <View
             key={index}
             className={`w-2 h-2 rounded-full mx-1 ${
-              index === activeIndex ? "bg-black" : "bg-gray-300"
+              index === activeIndex ? "bg-cyan-500" : "bg-gray-300"
             }`}
           />
         ))}
@@ -101,7 +109,7 @@ export default function Index() {
       ></FlatList>
       <Text>Category screen {category}</Text>
       {slidesData && slidesData?.success && (
-        <>
+        <View className="relative">
           <FlatList
             ref={flatListRef}
             data={slidesData?.success}
@@ -124,7 +132,7 @@ export default function Index() {
             scrollEventThrottle={16}
           />
           <DotPagination activeIndex={activeIndex} />
-        </>
+        </View>
       )}
     </View>
   );
