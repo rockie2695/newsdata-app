@@ -10,6 +10,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   useWindowDimensions,
+  ScrollView,
 } from "react-native";
 import { Key, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -47,12 +48,13 @@ export default function Index() {
         <View style={{ width: screenWidth }} className="aspect-video">
           <Image source={{ uri: item.image_url }} className="w-full h-full" />
           <LinearGradient
+            className="absolute w-full md:bottom-0 bottom-[8px] left-0"
             // Background Linear Gradient from bottom to top
-            colors={["rgba(0,0,0,1)", "rgba(0,0,0,0.1)"]}
-            start={{ x: 0, y: 1 }}
-            end={{ x: 0, y: 0 }}
+            colors={["black", "rgba(0,0,0,0.1)"]}
+            start={[0, 1]}
+            end={[0, 0]}
           >
-            <Text className="absolute w-full bottom-[5px] left-0 text-white text-lg font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
+            <Text className="w-full text-white text-xl font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
               {item.title}
             </Text>
           </LinearGradient>
@@ -86,7 +88,7 @@ export default function Index() {
   };
 
   return (
-    <View>
+    <ScrollView>
       <FlatList
         className="bg-white"
         horizontal
@@ -134,6 +136,6 @@ export default function Index() {
           <DotPagination activeIndex={activeIndex} />
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 }
