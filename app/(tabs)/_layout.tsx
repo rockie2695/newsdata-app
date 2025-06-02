@@ -1,4 +1,4 @@
-import TabBarIcon from "@/components/TabBarIcon";
+import TabBarIcon from "@/components/BottomTabBar/TabBarIcon";
 import { Tabs } from "expo-router";
 import { Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

@@ -14,15 +14,8 @@ import {
 } from "react-native";
 import { Key, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import TopTabFlatList from "@/components/Category/TopTabFlatList";
 export default function Index() {
-  const categories = [
-    { name: "Home", category: "home" },
-    { name: "Top", category: "top" },
-    { name: "Business", category: "business" },
-    { name: "Entertainment", category: "entertainment" },
-    { name: "Technology", category: "technology" },
-    { name: "Sports", category: "sports" },
-  ];
   const [category, setCategory] = useState<string>("home");
   const {
     isPending,
@@ -89,26 +82,7 @@ export default function Index() {
 
   return (
     <ScrollView>
-      <FlatList
-        className="bg-white"
-        horizontal
-        data={categories}
-        renderItem={({ item, index }) => (
-          <>
-            <Pressable
-              onPress={() => setCategory(item.category)}
-              className="px-4 py-2"
-              android_ripple={{
-                borderless: false,
-                radius: 50,
-                color: "#67e8f9",
-              }}
-            >
-              <Text className="text-base">{item.name}</Text>
-            </Pressable>
-          </>
-        )}
-      ></FlatList>
+      <TopTabFlatList category={category} setCategory={setCategory} />
       <Text>Category screen {category}</Text>
       {slidesData && slidesData?.success && (
         <View className="relative">
