@@ -13,8 +13,10 @@ import {
 } from "react-native";
 import { Key, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNewsStore } from "@/providers/news-store-provider";
 
-export default function MainSlide({ category }: { category: string }) {
+export default function MainSlide() {
+  const category = useNewsStore((state) => state.category);
   const {
     isPending,
     error,

@@ -1,12 +1,8 @@
+import { useNewsStore } from "@/providers/news-store-provider";
 import { FlatList, Pressable, Text } from "react-native";
 
-export default function TopTabFlatList({
-  category,
-  setCategory,
-}: {
-  category: string;
-  setCategory: (category: string) => void;
-}) {
+export default function TopTabFlatList() {
+  const setCategory = useNewsStore((state) => state.setCategory);
   const categories = [
     { name: "Home", category: "home" },
     { name: "Top", category: "top" },
