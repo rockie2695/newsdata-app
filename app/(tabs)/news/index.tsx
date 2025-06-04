@@ -1,4 +1,4 @@
-import { Text, ScrollView } from "react-native";
+import { Text, ScrollView, View } from "react-native";
 import TopTabFlatList from "@/components/Category/TopTabFlatList";
 import MainSlide from "@/components/Category/MainSlide";
 import { useNewsStore } from "@/providers/news-store-provider";
@@ -10,14 +10,12 @@ export default function Index() {
       <TopTabFlatList />
       <Text>Category screen {category}</Text>
       <MainSlide />
-      {category === "home" &&
-        [
-          "top",
-          "business",
-          "entertainment",
-          "sports",
-          "technology",
-        ].map((item) => <CategoryFlatList key={item} category={item} />)}
+      <View className="flex flex-col gap-4 p-4">
+        {category === "home" &&
+          ["top", "business", "entertainment", "sports", "technology"].map(
+            (item) => <CategoryFlatList key={item} category={item} />
+          )}
+      </View>
     </ScrollView>
   );
 }

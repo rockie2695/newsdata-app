@@ -7,6 +7,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { NewsStoreProvider } from "@/providers/news-store-provider";
 
+import "@/scripts/i18n";
+
 const queryClient = new QueryClient();
 
 export default function RootLayout() {

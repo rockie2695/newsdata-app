@@ -11,7 +11,7 @@ import {
   NativeScrollEvent,
   useWindowDimensions,
 } from "react-native";
-import { Key, useRef, useState } from "react";
+import { Key, useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNewsStore } from "@/providers/news-store-provider";
 
@@ -26,6 +26,15 @@ export default function MainSlide() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const screenWidth = useWindowDimensions().width;
   const [activeIndex, setActiveIndex] = useState<number>(0);
+
+  //when category change, reset scroll
+  useEffect(() => {
+    flatListRef.current?.scrollToIndex({
+      index: 0,
+      animated: false,
+    });
+    setActiveIndex(0);
+  }, [category]);
 
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = e.nativeEvent.contentOffset;
