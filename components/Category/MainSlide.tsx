@@ -1,5 +1,5 @@
 import { useFetchReactQuery } from "@/hook/useReactQuery";
-import slides from "@/scripts/slides";
+import { slides } from "@/scripts/api";
 import {
   Animated,
   FlatList,
@@ -53,7 +53,10 @@ export default function MainSlide() {
     return (
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
         <View style={{ width: screenWidth }} className="aspect-video">
-          <Image source={{ uri: item.image_url }} className="w-full h-full" />
+          <Image
+            source={{ uri: item.image_url }}
+            className="w-full h-full object-cover"
+          />
           <LinearGradient
             className="absolute w-full md:bottom-0 bottom-[8px] left-0"
             // Background Linear Gradient from bottom to top
