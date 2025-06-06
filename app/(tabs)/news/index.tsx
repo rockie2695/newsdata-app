@@ -10,7 +10,7 @@ export default function Index() {
       <TopTabFlatList />
       <Text>Category screen {category}</Text>
       <MainSlide />
-      <View className="flex flex-col gap-4 p-4">
+      <View className="flex flex-col gap-6 py-6">
         {category === "home" &&
           ["top", "business", "entertainment", "sports", "technology"].map(
             (item) => <CategoryFlatList key={item} category={item} />
