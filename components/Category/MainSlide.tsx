@@ -53,10 +53,19 @@ export default function MainSlide() {
     return (
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
         <View style={{ width: screenWidth }} className="aspect-video">
-          <Image
-            source={{ uri: item.image_url }}
-            className="w-full h-full object-cover"
-          />
+          {item.image_url ? (
+            <Image
+              source={{ uri: item.image_url }}
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <>
+              <View className="w-full h-full bg-gray-200" />
+              <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                No Image
+              </Text>
+            </>
+          )}
           <LinearGradient
             className="absolute w-full md:bottom-0 bottom-[8px] left-0"
             // Background Linear Gradient from bottom to top

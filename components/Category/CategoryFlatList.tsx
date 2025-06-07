@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useFetchReactQuery } from "@/hook/useReactQuery";
 import { news } from "@/scripts/api";
 import { Pressable, Image } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useNewsStore } from "@/providers/news-store-provider";
 
 export default function CategoryFlatList({ category }: { category: string }) {
   const { t } = useTranslation();
@@ -12,16 +14,24 @@ export default function CategoryFlatList({ category }: { category: string }) {
     data: newsData,
   } = useFetchReactQuery(["category", category], news(category, 6));
   const screenWidth = useWindowDimensions().width;
+  const setCategory = useNewsStore((state) => state.setCategory);
+
   return (
     <View>
-      <Text className="text-xl font-bold mx-4">{t(category)}</Text>
+      <Pressable
+        onPress={() => setCategory(category)}
+        className="flex flex-row items-center justify-between mx-4"
+      >
+        <Text className="text-xl font-bold">{t(category)}</Text>
+        <MaterialIcons name="arrow-forward" size={24} color="black" />
+      </Pressable>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
-        snapToInterval={screenWidth - 3 * 16 - 4}
+        snapToInterval={screenWidth - 4 * 16 + 16 - 2}
         snapToAlignment="start"
         decelerationRate="normal"
-        className="mt-2"
+        className="mt-4"
         data={newsData?.success || []}
         renderItem={({ item, index }) => (
           <Pressable
@@ -37,7 +47,7 @@ export default function CategoryFlatList({ category }: { category: string }) {
                 />
               ) : (
                 <>
-                  <View className="w-full h-full bg-gray-200" />
+                  <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
                   <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                     No Image
                   </Text>
