@@ -14,6 +14,7 @@ import {
 import { Key, useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNewsStore } from "@/providers/news-store-provider";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 export default function MainSlide() {
   const category = useNewsStore((state) => state.category);
@@ -21,7 +22,9 @@ export default function MainSlide() {
     isPending,
     error,
     data: slidesData,
-  } = useFetchReactQuery(["slide", category], slides(category, 6));
+  } = useFetchReactQuery(["slide", category], () =>
+    fetch(slides(category, 6)).then((res) => res.json())
+  );
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const screenWidth = useWindowDimensions().width || 300;
@@ -54,7 +57,7 @@ export default function MainSlide() {
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
         <View
           style={{ width: screenWidth }}
-          className="aspect-video min-h-[180px]"
+          className="aspect-video min-h-[180px] w-full"
         >
           {isPending ? (
             <View className="w-full h-full bg-gray-300 animate-pulse" />
@@ -111,37 +114,49 @@ export default function MainSlide() {
 
   return (
     <View className="relative">
-      <FlatList
-        ref={flatListRef}
-        data={
-          slidesData?.success || [
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 },
-            { id: 5 },
-            { id: 6 },
-          ]
-        }
-        keyExtractor={(item) => item.id}
-        renderItem={SlideRenderItem}
-        horizontal
-        pagingEnabled
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: scrollX,
+      {error && (
+        <View className="mt-4 flex flex-col items-center">
+          <MaterialIcons name="error" size={24} color="red" />
+          <Text className="text-lg text-red-500">
+            {error?.message || "error"}
+          </Text>
+        </View>
+      )}
+      {!error && (
+        <>
+          <FlatList
+            ref={flatListRef}
+            data={
+              slidesData?.success || [
+                { id: 1 },
+                { id: 2 },
+                { id: 3 },
+                { id: 4 },
+                { id: 5 },
+                { id: 6 },
+              ]
+            }
+            keyExtractor={(item) => item.id}
+            renderItem={SlideRenderItem}
+            horizontal
+            pagingEnabled
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      x: scrollX,
+                    },
+                  },
                 },
-              },
-            },
-          ],
-          { useNativeDriver: false, listener: onScroll }
-        )}
-        scrollEventThrottle={16}
-      />
-      <DotPagination activeIndex={activeIndex} />
+              ],
+              { useNativeDriver: false, listener: onScroll }
+            )}
+            scrollEventThrottle={16}
+          />
+          <DotPagination activeIndex={activeIndex} />
+        </>
+      )}
     </View>
   );
 }

@@ -1,21 +1,27 @@
-import { Text, ScrollView, View } from "react-native";
-import TopTabFlatList from "@/components/Category/TopTabFlatList";
+import CategoryHFlatList from "@/components/Category/CategoryHFlatList";
+import CategoryVFlatList from "@/components/Category/CategoryVFlatList";
 import MainSlide from "@/components/Category/MainSlide";
+import TopTabFlatList from "@/components/Category/TopTabFlatList";
 import { useNewsStore } from "@/providers/news-store-provider";
-import CategoryFlatList from "@/components/Category/CategoryFlatList";
+import { ScrollView, Text, View } from "react-native";
 export default function Index() {
   const category = useNewsStore((state) => state.category);
   return (
-    <ScrollView stickyHeaderIndices={[0]}>
-      <TopTabFlatList />
-      <Text>Category screen {category}</Text>
-      <MainSlide />
-      <View className="flex flex-col gap-6 py-6">
-        {category === "home" &&
-          ["top", "business", "entertainment", "sports", "technology"].map(
-            (item) => <CategoryFlatList key={item} category={item} />
-          )}
-      </View>
-    </ScrollView>
+    <>
+      {category === "home" ? (
+        <ScrollView stickyHeaderIndices={[0]}>
+          <TopTabFlatList />
+          <MainSlide />
+          <View className="flex flex-col gap-6 py-6">
+            {category === "home" &&
+              ["top", "business", "entertainment", "sports", "technology"].map(
+                (item) => <CategoryHFlatList key={item} category={item} />
+              )}
+          </View>
+        </ScrollView>
+      ) : (
+        <CategoryVFlatList />
+      )}
+    </>
   );
 }

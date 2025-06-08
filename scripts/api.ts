@@ -8,12 +8,19 @@ export function slides(category: string, limit: number) {
   );
 }
 
-export function news(category: string, limit: number) {
+export function news(
+  category: string,
+  limit: number,
+  lastId?: string,
+  dateTime?: string
+) {
   return (
     (process.env.EXPO_PUBLIC_API_LINK || "") +
     "/api/newsdata/" +
     category +
     "?limit=" +
-    limit
+    limit +
+    (lastId ? "&lastId=" + lastId : "") +
+    (dateTime ? "&dateTime=" + dateTime : "")
   );
 }
