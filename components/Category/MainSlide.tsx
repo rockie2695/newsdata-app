@@ -24,7 +24,7 @@ export default function MainSlide() {
   } = useFetchReactQuery(["category", category], slides(category, 6));
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
-  const screenWidth = useWindowDimensions().width;
+  const screenWidth = useWindowDimensions().width || 300;
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   //when category change, reset scroll
@@ -52,20 +52,28 @@ export default function MainSlide() {
   const SlideRenderItem = ({ item, index }: { item: any; index: number }) => {
     return (
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
-        <View style={{ width: screenWidth }} className="aspect-video">
-          {item.image_url ? (
+        <View
+          style={{ width: screenWidth }}
+          className="aspect-video min-h-[180px]"
+        >
+          {isPending ? (
+            <View className="w-full h-full bg-gray-300 animate-pulse" />
+          ) : null}
+          {!isPending && item.image_url ? (
             <Image
               source={{ uri: item.image_url }}
               className="w-full h-full object-cover"
+              progressiveRenderingEnabled={true}
             />
-          ) : (
+          ) : null}
+          {!isPending && !item.image_url ? (
             <>
               <View className="w-full h-full bg-gray-200" />
               <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 No Image
               </Text>
             </>
-          )}
+          ) : null}
           <LinearGradient
             className="absolute w-full md:bottom-0 bottom-[8px] left-0"
             // Background Linear Gradient from bottom to top
@@ -73,9 +81,13 @@ export default function MainSlide() {
             start={[0, 1]}
             end={[0, 0]}
           >
-            <Text className="w-full text-white text-xl font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
-              {item.title}
-            </Text>
+            {isPending ? (
+              <View className="w-full h-[44px] bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden animate-pulse" />
+            ) : (
+              <Text className="w-full text-white text-xl font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
+                {item.title}
+              </Text>
+            )}
           </LinearGradient>
         </View>
       </Pressable>
@@ -88,7 +100,7 @@ export default function MainSlide() {
         {slidesData?.success?.map((_: any, index: Key | null | undefined) => (
           <View
             key={index}
-            className={`w-2 h-2 rounded-full mx-1 ${
+            className={`w-[6px] h-[6px] rounded-full mx-1 ${
               index === activeIndex ? "bg-cyan-500" : "bg-gray-300"
             }`}
           />
@@ -98,32 +110,38 @@ export default function MainSlide() {
   };
 
   return (
-    slidesData &&
-    slidesData?.success && (
-      <View className="relative">
-        <FlatList
-          ref={flatListRef}
-          data={slidesData?.success}
-          keyExtractor={(item) => item.id}
-          renderItem={SlideRenderItem}
-          horizontal
-          pagingEnabled
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    x: scrollX,
-                  },
+    <View className="relative">
+      <FlatList
+        ref={flatListRef}
+        data={
+          slidesData?.success || [
+            { id: 1 },
+            { id: 2 },
+            { id: 3 },
+            { id: 4 },
+            { id: 5 },
+            { id: 6 },
+          ]
+        }
+        keyExtractor={(item) => item.id}
+        renderItem={SlideRenderItem}
+        horizontal
+        pagingEnabled
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: scrollX,
                 },
               },
-            ],
-            { useNativeDriver: false, listener: onScroll }
-          )}
-          scrollEventThrottle={16}
-        />
-        <DotPagination activeIndex={activeIndex} />
-      </View>
-    )
+            },
+          ],
+          { useNativeDriver: false, listener: onScroll }
+        )}
+        scrollEventThrottle={16}
+      />
+      <DotPagination activeIndex={activeIndex} />
+    </View>
   );
 }

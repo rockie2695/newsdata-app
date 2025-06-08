@@ -6,7 +6,7 @@ import CategoryFlatList from "@/components/Category/CategoryFlatList";
 export default function Index() {
   const category = useNewsStore((state) => state.category);
   return (
-    <ScrollView>
+    <ScrollView stickyHeaderIndices={[0]}>
       <TopTabFlatList />
       <Text>Category screen {category}</Text>
       <MainSlide />

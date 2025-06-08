@@ -33,7 +33,6 @@ const TabItem = ({
   isActive: boolean;
   onPress: (key: string) => void;
 }) => {
-  console.log(item, "render");
   const { t } = useTranslation();
   const color = useSharedValue(isActive ? "#ffffff" : "#1f2937"); // white : gray-800
   const fontWeight = useSharedValue<"400" | "700">(isActive ? "700" : "400");
@@ -68,14 +67,16 @@ const TabItem = ({
     <AnimatedPressable
       onPress={() => onPress(item.key)}
       style={backgroundAnimatedStyle}
-      className={"px-4 py-2 min-w-[60px]"}
+      className={
+        "px-4 py-1 min-w-[60px] rounded-xl overflow-hidden flex items-center"
+      }
       accessibilityRole="tab"
       accessibilityState={{ selected: isActive }}
       accessibilityLabel={item.key}
       hitSlop={{ top: 10, bottom: 10, left: 5, right: 5 }}
       android_ripple={{
         borderless: false,
-        radius: 50,
+        radius: 30,
         color: "#67e8f9",
       }}
     >
@@ -99,13 +100,14 @@ export default function TopTabFlatList() {
   );
 
   return (
-    <View className="bg-white">
+    <View className="bg-white sticky top-0 z-50">
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         data={CATEGORIES}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        contentContainerClassName="px-4 gap-2 py-1"
       />
     </View>
   );
