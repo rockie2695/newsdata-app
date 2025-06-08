@@ -21,7 +21,7 @@ export default function MainSlide() {
     isPending,
     error,
     data: slidesData,
-  } = useFetchReactQuery(["category", category], slides(category, 6));
+  } = useFetchReactQuery(["slide", category], slides(category, 6));
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;
   const screenWidth = useWindowDimensions().width || 300;
