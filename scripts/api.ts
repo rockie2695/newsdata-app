@@ -11,7 +11,7 @@ export function slides(category: string, limit: number) {
 export function news(
   category: string,
   limit: number,
-  lastId?: string,
+  lastId?: number,
   dateTime?: string
 ) {
   return (
