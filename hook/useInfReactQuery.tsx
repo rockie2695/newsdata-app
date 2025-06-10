@@ -1,8 +1,9 @@
+import { TnewsSlide } from "@/type/news";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-export const useFetchInfReactQuery = (
+export const useFetchInfReactQuery = <T,>(
   queryKey: string[],
-  queryFn: ({ pageParam }: { pageParam: any }) => Promise<any>
+  queryFn: ({ pageParam }: { pageParam: any }) => Promise<T>
 ) => {
   const {
     data,
@@ -16,18 +17,14 @@ export const useFetchInfReactQuery = (
   } = useInfiniteQuery({
     queryKey: queryKey,
     queryFn: queryFn,
-    initialPageParam: 0,
+    initialPageParam: [0, ""],
     getNextPageParam: (lastPage, pages) => {
       console.log("getNextPageParam", lastPage, pages);
-      return lastPage?.nextCursor || 0;
+      return [
+        (pages.at(-1) as TnewsSlide).id,
+        (pages.at(-1) as TnewsSlide).pubdate,
+      ];
     },
-    // getPreviousPageParam: (firstPage, allPages, firstPageParam) => {
-    //   console.log("getPreviousPageParam", firstPage, allPages, firstPageParam);
-    //   if (firstPageParam <= 1) {
-    //     return undefined;
-    //   }
-    //   return firstPageParam - 1;
-    // },
   });
 
   return {

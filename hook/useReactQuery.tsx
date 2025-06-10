@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useFetchReactQuery = (
+export const useFetchReactQuery = <T,>(
   queryKey: string[],
-  queryFnUrl: () => Promise<any>
+  queryFnUrl: () => Promise<T>
 ) => {
-  const { isPending, error, data } = useQuery({
+  const { isPending, error, data } = useQuery<T>({
     queryKey: queryKey,
     queryFn: queryFnUrl,
   });

@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { NewsResponse, TnewsData } from "@/type/news";
 
 export default function CategoryHFlatList({ category }: { category: string }) {
   const { t } = useTranslation();
@@ -18,8 +19,8 @@ export default function CategoryHFlatList({ category }: { category: string }) {
     isPending,
     error,
     data: newsData,
-  } = useFetchReactQuery(["category", category], () =>
-    fetch(news(category, 6)).then((res) => res.json())
+  } = useFetchReactQuery<NewsResponse>(["category", category], () =>
+    fetch(news(category, 6)).then((res) => res.json() as Promise<NewsResponse>)
   );
   const screenWidth = useWindowDimensions().width || 300;
   const setCategory = useNewsStore((state) => state.setCategory);
@@ -49,16 +50,7 @@ export default function CategoryHFlatList({ category }: { category: string }) {
           snapToAlignment="start"
           decelerationRate="normal"
           className="mt-4 min-w-full"
-          data={
-            newsData?.success || [
-              { id: 1 },
-              { id: 2 },
-              { id: 3 },
-              { id: 4 },
-              { id: 5 },
-              { id: 6 },
-            ]
-          } // mock data
+          data={newsData?.success || placeholderData} // mock data
           renderItem={({ item, index }) => (
             <Pressable
               onPress={() => console.log(item)}
@@ -104,9 +96,30 @@ export default function CategoryHFlatList({ category }: { category: string }) {
               )}
             </Pressable>
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
         />
       )}
     </View>
   );
 }
+
+const placeholderData: TnewsData[] = Array(6)
+  .fill(0)
+  .map((_, i) => ({
+    id: i + 1,
+    category: ["general"],
+    country: ["us"],
+    creator: [""],
+    description: "",
+    image_url: null,
+    language: "en",
+    link: "",
+    pubdate: new Date().toISOString(),
+    source_id: "",
+    source_priority: 0,
+    title: "Loading...",
+    video_url: null,
+    insert_time: new Date().toISOString(),
+    content: "",
+    keywords: [],
+  }));
