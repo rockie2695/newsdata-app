@@ -1,38 +1,43 @@
-import { useNewsStore } from "@/providers/news-store-provider";
-import { FlatList, View, Text, Pressable, Image } from "react-native";
-import MainSlide from "./MainSlide";
-import TopTabFlatList from "./TopTabFlatList";
-import { news } from "@/scripts/api";
 import { useFetchInfReactQuery } from "@/hook/useInfReactQuery";
+import { useNewsStore } from "@/providers/news-store-provider";
+import { news } from "@/scripts/api";
 import { NewsResponse, TnewsSlide } from "@/type/news";
+import { useTranslation } from "react-i18next";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+import MainSlide from "./MainSlide";
 
 export default function CategoryVFlatList() {
+  const { t } = useTranslation();
   const category = useNewsStore((state) => state.category);
-  const { isPending, error, data } = useFetchInfReactQuery<TnewsSlide[]>(
-    ["news", category],
-    async ({ pageParam }) => {
-      console.log(pageParam);
-      let res: Response;
-      if (pageParam.length > 0 && pageParam[0] > 0 && pageParam[1]) {
-        res = await fetch(news(category, 10, pageParam[0], pageParam[1]));
-      } else {
-        res = await fetch(news(category, 10));
+  const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
+    useFetchInfReactQuery<TnewsSlide[]>(
+      ["news", category],
+      async ({ pageParam }) => {
+        console.log("check here 2", pageParam);
+        let res: Response;
+        if (pageParam.length > 0 && pageParam[0] > 0 && pageParam[1]) {
+          res = await fetch(news(category, 10, pageParam[0], pageParam[1]));
+        } else {
+          res = await fetch(news(category, 10));
+        }
+        const data: NewsResponse = await res.json();
+        if (!data?.success) {
+          throw new Error("Failed to fetch news");
+        }
+        return data.success; // This should be an array of TnewsSlide
       }
-      const data: NewsResponse = await res.json();
-      if (!data?.success) {
-        throw new Error("Failed to fetch news");
-      }
-      return data.success; // This should be an array of TnewsSlide
-    }
-  );
-  console.log(data);
+    );
+  console.log("check here 1", isPending);
   const renderItem = ({ item, index }: { item: TnewsSlide; index: number }) => {
-    console.log(item);
     return (
-      <Pressable
-        onPress={() => console.log(item)}
-        className={"mt-4 mx-4"}
-      >
+      <Pressable onPress={() => console.log(item)} className={"mt-4 mx-4"}>
         <View className="aspect-video relative rounded-2xl overflow-hidden">
           {isPending ? (
             <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
@@ -76,14 +81,31 @@ export default function CategoryVFlatList() {
 
   return (
     <FlatList
+      className="pb-6"
       data={data?.pages.flat()}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()}
+      onEndReached={() => {
+        if (!isPending && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }}
+      onEndReachedThreshold={0.5}
       ListHeaderComponent={() => (
         <>
           <MainSlide />
+          <Text className="text-xl font-bold mx-4 mt-6 h-[40px] flex items-center">
+            {t("details")}
+          </Text>
         </>
       )}
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <View className="py-4">
+            <ActivityIndicator size="large" color="#06b6d4" />
+          </View>
+        ) : null
+      }
     />
   );
 }

@@ -21,8 +21,8 @@ export const useFetchInfReactQuery = <T,>(
     getNextPageParam: (lastPage, pages) => {
       console.log("getNextPageParam", lastPage, pages);
       return [
-        (pages.at(-1) as TnewsSlide).id,
-        (pages.at(-1) as TnewsSlide).pubdate,
+        (lastPage as TnewsSlide[]).at(-1)?.id,
+        (lastPage as TnewsSlide[]).at(-1)?.pubdate,
       ];
     },
   });

@@ -13,6 +13,7 @@ const resources = {
       entertainment: "Entertainment",
       technology: "Technology",
       sports: "Sports",
+      details: "Details",
     },
   },
   "zh-HK": {
@@ -23,6 +24,7 @@ const resources = {
       entertainment: "娛樂",
       technology: "科技",
       sports: "體育",
+      details: "詳情",
     },
   },
 };
