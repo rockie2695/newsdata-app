@@ -2,6 +2,9 @@ import { useFetchInfReactQuery } from "@/hook/useInfReactQuery";
 import { useNewsStore } from "@/providers/news-store-provider";
 import { news } from "@/scripts/api";
 import { NewsResponse, TnewsSlide } from "@/type/news";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { differenceInDays, format, formatDistanceToNow } from "date-fns";
+import { zhHK } from "date-fns/locale/zh-HK";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -13,8 +16,28 @@ import {
 } from "react-native";
 import MainSlide from "./MainSlide";
 
+const formatDate = (dateString: string, language: string) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  
+  // If the date is more than 1 day ago, show full date and time
+  if (differenceInDays(now, date) >= 1) {
+    if (language === 'zh-HK') {
+      return format(date, 'yyyy年MM月dd日 HH:mm');
+    }
+    return format(date, 'MMM d, yyyy h:mm a');
+  }
+  
+  // Otherwise, show relative time
+  return formatDistanceToNow(date, {
+    addSuffix: true,
+    locale: language === 'zh-HK' ? zhHK : undefined,
+  });
+};
+
 export default function CategoryVFlatList() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLanguage = i18n.language;
   const category = useNewsStore((state) => state.category);
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
     useFetchInfReactQuery<TnewsSlide[]>(
@@ -73,6 +96,13 @@ export default function CategoryVFlatList() {
         ) : (
           <Text className="text-lg mt-2 line-clamp-2">{item.title}</Text>
         )}
+        {isPending ? (
+          <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+        ) : (
+          <Text className="text-sm text-gray-500">
+            {formatDate(item.pubdate, currentLanguage)}
+          </Text>
+        )}
       </Pressable>
     );
   };
@@ -95,6 +125,14 @@ export default function CategoryVFlatList() {
           <Text className="text-xl font-bold mx-4 mt-6 h-[40px] flex items-center">
             {t("details")}
           </Text>
+          {error && (
+            <View className="mt-4 flex flex-col items-center">
+              <MaterialIcons name="error" size={24} color="red" />
+              <Text className="text-lg text-red-500">
+                {error?.message || "error"}
+              </Text>
+            </View>
+          )}
         </>
       )}
       ListFooterComponent={
