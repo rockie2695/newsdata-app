@@ -20,7 +20,6 @@ export default function CategoryVFlatList() {
     useFetchInfReactQuery<TnewsSlide[]>(
       ["news", category],
       async ({ pageParam }) => {
-        console.log("check here 2", pageParam);
         let res: Response;
         if (pageParam.length > 0 && pageParam[0] > 0 && pageParam[1]) {
           res = await fetch(news(category, 10, pageParam[0], pageParam[1]));
@@ -34,7 +33,6 @@ export default function CategoryVFlatList() {
         return data.success; // This should be an array of TnewsSlide
       }
     );
-  console.log("check here 1", isPending);
   const renderItem = ({ item, index }: { item: TnewsSlide; index: number }) => {
     return (
       <Pressable onPress={() => console.log(item)} className={"mt-4 mx-4"}>
