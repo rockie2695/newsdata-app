@@ -8,9 +8,10 @@ export default function Index() {
   const category = useNewsStore((state) => state.category);
   return (
     <>
+      <TopTabFlatList />
       {category === "home" ? (
-        <ScrollView stickyHeaderIndices={[0]}>
-          <TopTabFlatList />
+        <ScrollView>
+          {/*  stickyHeaderIndices={[0]} */}
           <MainSlide />
           <View className="flex flex-col gap-6 py-6">
             {category === "home" &&

@@ -32,7 +32,9 @@ export default function CategoryHFlatList({ category }: { category: string }) {
         className="flex flex-row items-center justify-between mx-4"
       >
         <Text className="text-xl font-bold">{t(category)}</Text>
-        <MaterialIcons name="arrow-forward" size={24} color="black" />
+        <View className="p-2 hover:bg-gray-300 rounded-full">
+          <MaterialIcons name="arrow-forward" size={24} color="black" />
+        </View>
       </Pressable>
       {error && (
         <View className="mt-4 flex flex-col items-center">

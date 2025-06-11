@@ -81,7 +81,6 @@ export default function CategoryVFlatList() {
       keyExtractor={(item) => item.id.toString()}
       ListHeaderComponent={() => (
         <>
-          <TopTabFlatList />
           <MainSlide />
         </>
       )}
