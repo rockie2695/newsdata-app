@@ -11,6 +11,12 @@ export default function NewsLayout() {
             headerShown: false,
           }}
         />
+        <Stack.Screen
+          name="article"
+          options={{
+            headerShown: false,
+          }}
+        />
         {/* <Stack.Screen
           name="categories/[category]"
           options={({ route }) => ({

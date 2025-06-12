@@ -11,33 +11,39 @@ import {
   FlatList,
   Image,
   Pressable,
+  Switch,
   Text,
   View,
 } from "react-native";
 import MainSlide from "./MainSlide";
+import { useState } from "react";
 
 const formatDate = (dateString: string, language: string) => {
   const date = new Date(dateString);
   const now = new Date();
-  
+
   // If the date is more than 1 day ago, show full date and time
   if (differenceInDays(now, date) >= 1) {
-    if (language === 'zh-HK') {
-      return format(date, 'yyyy年MM月dd日 HH:mm');
+    if (language === "zh-HK") {
+      return format(date, "yyyy年MM月dd日 HH:mm");
     }
-    return format(date, 'MMM d, yyyy h:mm a');
+    return format(date, "MMM d, yyyy h:mm a");
   }
-  
+
   // Otherwise, show relative time
   return formatDistanceToNow(date, {
     addSuffix: true,
-    locale: language === 'zh-HK' ? zhHK : undefined,
+    locale: language === "zh-HK" ? zhHK : undefined,
   });
 };
 
 export default function CategoryVFlatList() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
   const category = useNewsStore((state) => state.category);
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
     useFetchInfReactQuery<TnewsSlide[]>(
@@ -122,9 +128,29 @@ export default function CategoryVFlatList() {
       ListHeaderComponent={() => (
         <>
           <MainSlide />
-          <Text className="text-xl font-bold mx-4 mt-6 h-[40px] flex items-center">
-            {t("details")}
-          </Text>
+          <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
+            <Text className="text-xl font-bold">{t("details")}</Text>
+            <View className="flex flex-row items-center">
+              <MaterialIcons name="table-rows" size={24} color="black" />
+              <Switch
+                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+              <MaterialIcons name="list" size={24} color="black" />
+            </View>
+          </View>
+        </>
+      )}
+      ListFooterComponent={
+        <>
+          {isFetchingNextPage ? (
+            <View className="py-4">
+              <ActivityIndicator size="large" color="#06b6d4" />
+            </View>
+          ) : null}
           {error && (
             <View className="mt-4 flex flex-col items-center">
               <MaterialIcons name="error" size={24} color="red" />
@@ -134,13 +160,6 @@ export default function CategoryVFlatList() {
             </View>
           )}
         </>
-      )}
-      ListFooterComponent={
-        isFetchingNextPage ? (
-          <View className="py-4">
-            <ActivityIndicator size="large" color="#06b6d4" />
-          </View>
-        ) : null
       }
     />
   );
