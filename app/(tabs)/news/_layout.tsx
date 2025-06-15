@@ -12,7 +12,7 @@ export default function NewsLayout() {
           }}
         />
         <Stack.Screen
-          name="article/index"
+          name="article/[id]"
           options={{
             headerShown: false,
           }}

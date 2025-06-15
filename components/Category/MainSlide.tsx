@@ -15,9 +15,10 @@ import { Key, useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNewsStore } from "@/stores/news-store";
+import { router } from "expo-router";
 
 export default function MainSlide() {
-  const {category} = useNewsStore();
+  const { category } = useNewsStore();
   const {
     isPending,
     error,
@@ -50,6 +51,7 @@ export default function MainSlide() {
 
   const slideClicked = (item: any) => {
     console.log(item);
+    router.push(`/news/article/${item.id}`);
   };
 
   const SlideRenderItem = ({ item, index }: { item: any; index: number }) => {
