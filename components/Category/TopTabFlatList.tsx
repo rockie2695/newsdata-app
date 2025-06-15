@@ -1,4 +1,4 @@
-import { useNewsStore } from "@/providers/news-store-provider";
+import { useNewsStore } from "@/stores/news-store";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Pressable, Text, View } from "react-native";
@@ -88,8 +88,7 @@ const TabItem = ({
 };
 
 export default function TopTabFlatList() {
-  const category = useNewsStore((state) => state.category);
-  const setCategory = useNewsStore((state) => state.setCategory);
+  const { category, setCategory } = useNewsStore();
 
   const renderItem = ({ item }: { item: Category }) => (
     <TabItem

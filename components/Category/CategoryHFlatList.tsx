@@ -1,6 +1,7 @@
 import { useFetchReactQuery } from "@/hook/useReactQuery";
-import { useNewsStore } from "@/providers/news-store-provider";
 import { news } from "@/scripts/api";
+import { useNewsStore } from "@/stores/news-store";
+import { NewsResponse, TnewsData } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,7 +12,6 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { NewsResponse, TnewsData } from "@/type/news";
 
 export default function CategoryHFlatList({ category }: { category: string }) {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function CategoryHFlatList({ category }: { category: string }) {
     fetch(news(category, 6)).then((res) => res.json() as Promise<NewsResponse>)
   );
   const screenWidth = useWindowDimensions().width || 300;
-  const setCategory = useNewsStore((state) => state.setCategory);
+  const { setCategory } = useNewsStore();
 
   return (
     <View>

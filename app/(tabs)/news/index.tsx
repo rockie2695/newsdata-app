@@ -2,10 +2,10 @@ import CategoryHFlatList from "@/components/Category/CategoryHFlatList";
 import CategoryVFlatList from "@/components/Category/CategoryVFlatList";
 import MainSlide from "@/components/Category/MainSlide";
 import TopTabFlatList from "@/components/Category/TopTabFlatList";
-import { useNewsStore } from "@/providers/news-store-provider";
+import { useNewsStore } from "@/stores/news-store";
 import { ScrollView, Text, View } from "react-native";
 export default function Index() {
-  const category = useNewsStore((state) => state.category);
+  const {category} = useNewsStore();
   return (
     <>
       <TopTabFlatList />

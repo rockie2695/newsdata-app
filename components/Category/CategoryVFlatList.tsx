@@ -1,5 +1,4 @@
 import { useFetchInfReactQuery } from "@/hook/useInfReactQuery";
-import { useNewsStore } from "@/providers/news-store-provider";
 import { news } from "@/scripts/api";
 import { NewsResponse, TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -16,6 +15,7 @@ import {
 } from "react-native";
 import MainSlide from "./MainSlide";
 import RowSwitch from "./RowSwitch";
+import { useNewsStore } from "@/stores/news-store";
 
 const formatDate = (dateString: string, language: string) => {
   const date = new Date(dateString);
@@ -40,7 +40,7 @@ export default function CategoryVFlatList() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
 
-  const category = useNewsStore((state) => state.category);
+  const {category} = useNewsStore();
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
     useFetchInfReactQuery<TnewsSlide[]>(
       ["news", category],
