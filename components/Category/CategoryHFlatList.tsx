@@ -30,6 +30,11 @@ export default function CategoryHFlatList({ category }: { category: string }) {
       <Pressable
         onPress={() => setCategory(category)}
         className="flex flex-row items-center justify-between mx-4"
+        android_ripple={{
+          borderless: false,
+          radius: 50,
+          color: "#67e8f9",
+        }}
       >
         <Text className="text-xl font-bold">{t(category)}</Text>
         <View className="p-2 hover:bg-gray-300 rounded-full">

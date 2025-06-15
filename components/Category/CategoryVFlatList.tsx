@@ -11,12 +11,11 @@ import {
   FlatList,
   Image,
   Pressable,
-  Switch,
   Text,
   View,
 } from "react-native";
 import MainSlide from "./MainSlide";
-import { useState } from "react";
+import RowSwitch from "./RowSwitch";
 
 const formatDate = (dateString: string, language: string) => {
   const date = new Date(dateString);
@@ -40,9 +39,6 @@ const formatDate = (dateString: string, language: string) => {
 export default function CategoryVFlatList() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const category = useNewsStore((state) => state.category);
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
@@ -131,15 +127,7 @@ export default function CategoryVFlatList() {
           <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
             <Text className="text-xl font-bold">{t("details")}</Text>
             <View className="flex flex-row items-center">
-              <MaterialIcons name="table-rows" size={24} color="black" />
-              <Switch
-                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                ios_backgroundColor="#3e3e3e"
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-              <MaterialIcons name="list" size={24} color="black" />
+              <RowSwitch />
             </View>
           </View>
         </>
