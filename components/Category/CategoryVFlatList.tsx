@@ -1,9 +1,11 @@
 import { useFetchInfReactQuery } from "@/hook/useInfReactQuery";
 import { news } from "@/scripts/api";
+import { useNewsStore } from "@/stores/news-store";
 import { NewsResponse, TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import { zhHK } from "date-fns/locale/zh-HK";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -15,7 +17,6 @@ import {
 } from "react-native";
 import MainSlide from "./MainSlide";
 import RowSwitch from "./RowSwitch";
-import { useNewsStore } from "@/stores/news-store";
 
 const formatDate = (dateString: string, language: string) => {
   const date = new Date(dateString);
@@ -39,8 +40,17 @@ const formatDate = (dateString: string, language: string) => {
 export default function CategoryVFlatList() {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
+  const flatListRef = useRef<FlatList>(null);
 
-  const {category} = useNewsStore();
+  const { category } = useNewsStore();
+
+  // Scroll to top when category changes
+  useEffect(() => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: 0, animated: true });
+    }
+  }, [category]);
+
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
     useFetchInfReactQuery<TnewsSlide[]>(
       ["news", category],
@@ -110,45 +120,47 @@ export default function CategoryVFlatList() {
   };
 
   return (
-    <FlatList
-      className="pb-6"
-      data={data?.pages.flat()}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      onEndReached={() => {
-        if (!isPending && !isFetchingNextPage) {
-          fetchNextPage();
+    <View className="flex-1 bg-white">
+      <FlatList
+        ref={flatListRef}
+        className="pb-6"
+        data={data?.pages.flat()}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        onEndReached={() => {
+          if (!isPending && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.5}
+        ListHeaderComponent={() => (
+          <>
+            <MainSlide />
+            <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
+              <Text className="text-xl font-bold">{t("details")}</Text>
+              <View className="flex flex-row items-center">
+                <RowSwitch />
+              </View>
+            </View>
+          </>
+        )}
+        ListFooterComponent={
+          <>
+            {error ? (
+              <View className="mt-4 flex flex-col items-center">
+                <MaterialIcons name="error" size={24} color="red" />
+                <Text className="text-lg text-red-500">
+                  {error?.message || "error"}
+                </Text>
+              </View>
+            ) : (
+              <View className="py-4">
+                <ActivityIndicator size="large" color="#06b6d4" />
+              </View>
+            )}
+          </>
         }
-      }}
-      onEndReachedThreshold={0.5}
-      ListHeaderComponent={() => (
-        <>
-          <MainSlide />
-          <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
-            <Text className="text-xl font-bold">{t("details")}</Text>
-            <View className="flex flex-row items-center">
-              <RowSwitch />
-            </View>
-          </View>
-        </>
-      )}
-      ListFooterComponent={
-        <>
-          {isFetchingNextPage ? (
-            <View className="py-4">
-              <ActivityIndicator size="large" color="#06b6d4" />
-            </View>
-          ) : null}
-          {error && (
-            <View className="mt-4 flex flex-col items-center">
-              <MaterialIcons name="error" size={24} color="red" />
-              <Text className="text-lg text-red-500">
-                {error?.message || "error"}
-              </Text>
-            </View>
-          )}
-        </>
-      }
-    />
+      />
+    </View>
   );
 }
