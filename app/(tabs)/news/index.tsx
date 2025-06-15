@@ -3,9 +3,9 @@ import CategoryVFlatList from "@/components/Category/CategoryVFlatList";
 import MainSlide from "@/components/Category/MainSlide";
 import TopTabFlatList from "@/components/Category/TopTabFlatList";
 import { useNewsStore } from "@/stores/news-store";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, StatusBar, Text, View } from "react-native";
 export default function Index() {
-  const {category} = useNewsStore();
+  const { category } = useNewsStore();
   return (
     <>
       <TopTabFlatList />

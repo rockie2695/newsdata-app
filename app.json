@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/newsdata/1024x1024.png",
     "scheme": "newsdataapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
