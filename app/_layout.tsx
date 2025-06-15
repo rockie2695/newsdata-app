@@ -12,11 +12,11 @@ const queryClient = new QueryClient();
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-        <Stack screenOptions={{ navigationBarColor: "black" }}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          {/* <Stack.Screen name="search" options={{ title: "Search" }} /> */}
-        </Stack>
-        <StatusBar style="dark" />
+      <Stack screenOptions={{ navigationBarColor: "white" }}>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        {/* <Stack.Screen name="search" options={{ title: "Search" }} /> */}
+      </Stack>
+      <StatusBar style="auto" />
     </QueryClientProvider>
   );
 }

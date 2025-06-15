@@ -29,16 +29,16 @@ export default function CategoryHFlatList({ category }: { category: string }) {
     <View>
       <Pressable
         onPress={() => setCategory(category)}
-        className="flex flex-row items-center justify-between mx-4"
-        android_ripple={{
-          borderless: false,
-          radius: 50,
-          color: "#67e8f9",
-        }}
+        className="flex flex-row items-center justify-between px-4"
       >
         <Text className="text-xl font-bold">{t(category)}</Text>
         <View className="p-2 hover:bg-gray-300 rounded-full">
-          <MaterialIcons name="arrow-forward" size={24} color="black" />
+          <MaterialIcons
+            name="arrow-forward"
+            size={24}
+            color="black"
+            onPress={() => setCategory(category)}
+          />
         </View>
       </Pressable>
       {error && (

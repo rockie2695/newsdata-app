@@ -40,14 +40,14 @@ const TabItem = ({
 
   const textAnimatedStyle = useAnimatedStyle(() => {
     return {
-      color: withTiming(color.value, { duration: 300 }),
-      fontWeight: withTiming(fontWeight.value, { duration: 300 }),
+      color: withTiming(color.value, { duration: 0 }),
+      fontWeight: withTiming(fontWeight.value, { duration: 0 }),
     };
   });
 
   const backgroundAnimatedStyle = useAnimatedStyle(() => {
     return {
-      backgroundColor: withTiming(backgroundColor.value, { duration: 300 }),
+      backgroundColor: withTiming(backgroundColor.value, { duration: 0 }),
     };
   });
 
@@ -68,7 +68,7 @@ const TabItem = ({
       onPress={() => onPress(item.key)}
       style={backgroundAnimatedStyle}
       className={
-        "px-4 py-1 min-w-[60px] rounded-xl overflow-hidden flex items-center"
+        "px-4 py-2 min-w-[60px] rounded-xl overflow-hidden flex items-center"
       }
       accessibilityRole="tab"
       accessibilityState={{ selected: isActive }}
