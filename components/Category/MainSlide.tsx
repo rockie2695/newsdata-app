@@ -16,6 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNewsStore } from "@/stores/news-store";
 import { router } from "expo-router";
+import { TnewsSlide } from "@/type/news";
 
 export default function MainSlide() {
   const { category } = useNewsStore();
@@ -49,12 +50,16 @@ export default function MainSlide() {
     setActiveIndex(currentIndex);
   };
 
-  const slideClicked = (item: any) => {
+  const slideClicked = (item: TnewsSlide) => {
     console.log(item);
-    router.push(`/news/article/${item.id}`);
+    router.push(
+      `/news/article/${category !== "home" ? category : item.category[0]}/${
+        item.id
+      }`
+    );
   };
 
-  const SlideRenderItem = ({ item, index }: { item: any; index: number }) => {
+  const SlideRenderItem = ({ item }: { item: TnewsSlide }) => {
     return (
       <Pressable key={item.id} onPress={() => slideClicked(item)}>
         <View
@@ -138,7 +143,7 @@ export default function MainSlide() {
                 { id: 6 },
               ]
             }
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={SlideRenderItem}
             horizontal
             pagingEnabled

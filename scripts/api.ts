@@ -24,3 +24,13 @@ export function news(
     (dateTime ? "&dateTime=" + dateTime : "")
   );
 }
+
+export function article(category: string, id: string) {
+  return (
+    (process.env.EXPO_PUBLIC_API_LINK || "") +
+    "/api/newsdata/" +
+    category +
+    "/" +
+    id
+  );
+}

@@ -47,6 +47,9 @@
         "projectId": "6e23b164-7e95-4f5c-9522-0da87119d95e"
       }
     },
-    "owner": "rockie2695"
+    "owner": "rockie2695",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
   }
 }
