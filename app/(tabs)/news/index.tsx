@@ -2,12 +2,14 @@ import CategoryHFlatList from "@/components/Category/CategoryHFlatList";
 import CategoryVFlatList from "@/components/Category/CategoryVFlatList";
 import MainSlide from "@/components/Category/MainSlide";
 import TopTabFlatList from "@/components/Category/TopTabFlatList";
+import TopStatusBar from "@/components/TopStatusBar/TopStatusBar";
 import { useNewsStore } from "@/stores/news-store";
 import { ScrollView, StatusBar, Text, View } from "react-native";
 export default function Index() {
   const { category } = useNewsStore();
   return (
     <>
+      <TopStatusBar />
       <TopTabFlatList />
       {category === "home" ? (
         <ScrollView>
