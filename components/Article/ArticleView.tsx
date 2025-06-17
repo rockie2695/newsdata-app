@@ -2,6 +2,7 @@ import { useFetchReactQuery } from "@/hook/useReactQuery";
 import { Image, Text, useWindowDimensions, View } from "react-native";
 import { article } from "@/scripts/api";
 import ParallaxScrollView from "./ParallelScrollView";
+import CategoryHFlatList from "../Category/CategoryHFlatList";
 export default function Article({
   category,
   id,
@@ -20,7 +21,7 @@ export default function Article({
   const screenWidth = useWindowDimensions().width || 300;
   const imageHeight = screenWidth * (9 / 16);
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <ParallaxScrollView
         parallaxHeaderContent={
           <View className="aspect-video  w-full">
@@ -46,79 +47,17 @@ export default function Article({
         }
         parallaxHeaderHeight={imageHeight}
       >
-        <View className="mt-4">
-          <Text className="text-2xl font-bold">
+        <View className="bg-gray-100 pt-2">
+          <Text className="text-xl font-bold font-[NotoSansHK] mx-2">
             {articleData?.success?.title}
           </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.title}
-          </Text>
-          <Text className="text-2xl font-bold">
-            {articleData?.success?.creator}
-          </Text>
+
+          <View className="flex flex-col gap-6 py-6">
+            {articleData?.success?.category.length > 0 &&
+              articleData.success.category.map((item: string) => (
+                <CategoryHFlatList key={item} category={item} />
+              ))}
+          </View>
         </View>
       </ParallaxScrollView>
     </View>
