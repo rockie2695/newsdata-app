@@ -35,7 +35,33 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/noto-sans-hk/400Regular/NotoSansHK_400Regular.ttf",
+            "node_modules/@expo-google-fonts/noto-sans-hk/700Bold/NotoSansHK_700Bold.ttf"
+          ],
+          "android": {
+            "fonts": [
+              {
+                "fontFamily": "NotoSansHK",
+                "fontDefinitions": [
+                  {
+                    "path": "node_modules/@expo-google-fonts/noto-sans-hk/400Regular/NotoSansHK_400Regular.ttf",
+                    "weight": 400
+                  },
+                  {
+                    "path": "node_modules/@expo-google-fonts/noto-sans-hk/700Bold/NotoSansHK_700Bold.ttf",
+                    "weight": 700
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

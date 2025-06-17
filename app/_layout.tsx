@@ -10,6 +10,9 @@ import * as NavigationBar from "expo-navigation-bar";
 
 import "@/scripts/i18n";
 
+import { NotoSansHK_400Regular } from '@expo-google-fonts/noto-sans-hk/400Regular';
+import { NotoSansHK_700Bold } from '@expo-google-fonts/noto-sans-hk/700Bold';
+
 const queryClient = new QueryClient();
 
 const setNavigationBarStyle = async () => {

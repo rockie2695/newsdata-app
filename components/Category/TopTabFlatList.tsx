@@ -80,7 +80,7 @@ const TabItem = ({
         color: "#67e8f9",
       }}
     >
-      <Animated.Text className={"text-base"} style={textAnimatedStyle}>
+      <Animated.Text className={"text-base font-[NotoSansHK]"} style={textAnimatedStyle}>
         {t(item.key)}
       </Animated.Text>
     </AnimatedPressable>

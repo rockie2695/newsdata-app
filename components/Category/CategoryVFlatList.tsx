@@ -85,7 +85,7 @@ export default function CategoryVFlatList() {
           {!isPending && !item.image_url ? (
             <>
               <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
-              <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
                 No Image
               </Text>
             </>
@@ -94,7 +94,7 @@ export default function CategoryVFlatList() {
           {isPending ? (
             <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
           ) : (
-            <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl">
+            <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
               {item.source_id}
               {item.creator ? " | " + item.creator : ""}
             </Text>
@@ -106,12 +106,14 @@ export default function CategoryVFlatList() {
             <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
           </>
         ) : (
-          <Text className="text-lg mt-2 line-clamp-2">{item.title}</Text>
+          <Text className="text-lg mt-2 line-clamp-2 font-[NotoSansHK]">
+            {item.title}
+          </Text>
         )}
         {isPending ? (
           <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
         ) : (
-          <Text className="text-sm text-gray-500">
+          <Text className="text-sm text-gray-500 font-[NotoSansHK]">
             {formatDate(item.pubdate, currentLanguage)}
           </Text>
         )}
@@ -137,7 +139,9 @@ export default function CategoryVFlatList() {
           <>
             <MainSlide />
             <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
-              <Text className="text-xl font-bold">{t("details")}</Text>
+              <Text className="text-xl font-bold font-[NotoSansHK]">
+                {t("details")}
+              </Text>
               <View className="flex flex-row items-center">
                 <RowSwitch />
               </View>
@@ -149,7 +153,7 @@ export default function CategoryVFlatList() {
             {error ? (
               <View className="mt-4 flex flex-col items-center">
                 <MaterialIcons name="error" size={24} color="red" />
-                <Text className="text-lg text-red-500">
+                <Text className="text-lg text-red-500 font-[NotoSansHK]">
                   {error?.message || "error"}
                 </Text>
               </View>

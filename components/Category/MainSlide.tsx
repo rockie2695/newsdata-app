@@ -94,7 +94,7 @@ export default function MainSlide() {
             {isPending ? (
               <View className="w-full h-[44px] bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden animate-pulse" />
             ) : (
-              <Text className="w-full text-white text-xl font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden">
+              <Text className="w-full text-white text-xl font-bold bg-gradient-to-t from-black to-black/10 p-2 line-clamp-2 text-ellipsis overflow-hidden font-[NotoSansHK]">
                 {item.title}
               </Text>
             )}
