@@ -3,6 +3,7 @@ import { Image, Text, useWindowDimensions, View } from "react-native";
 import { article } from "@/scripts/api";
 import ParallaxScrollView from "./ParallelScrollView";
 import CategoryHFlatList from "../Category/CategoryHFlatList";
+import { ArticleResponse } from "@/type/news";
 export default function Article({
   category,
   id,
@@ -14,6 +15,10 @@ export default function Article({
     isPending,
     error,
     data: articleData,
+  }: {
+    isPending: boolean;
+    error: any;
+    data: ArticleResponse;
   } = useFetchReactQuery(["article", category, id], () =>
     fetch(article(category, id)).then((res) => res.json())
   );
@@ -53,8 +58,8 @@ export default function Article({
           </Text>
 
           <View className="flex flex-col gap-6 py-6">
-            {articleData?.success?.category.length > 0 &&
-              articleData.success.category.map((item: string) => (
+            {(articleData?.success?.category || []).length > 0 &&
+              (articleData?.success?.category || []).map((item: string) => (
                 <CategoryHFlatList key={item} category={item} />
               ))}
           </View>

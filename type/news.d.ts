@@ -3,6 +3,11 @@ export type NewsResponse = {
   error?: string;
 };
 
+export type ArticleResponse = {
+  success?: TnewsData;
+  error?: string;
+};
+
 export type TnewsSlide = {
   id: number;
   category: string[];
