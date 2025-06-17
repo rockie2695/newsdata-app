@@ -15,11 +15,7 @@ export default function Article({
     isPending,
     error,
     data: articleData,
-  }: {
-    isPending: boolean;
-    error: any;
-    data: ArticleResponse;
-  } = useFetchReactQuery(["article", category, id], () =>
+  } = useFetchReactQuery<ArticleResponse>(["article", category, id], () =>
     fetch(article(category, id)).then((res) => res.json())
   );
   console.log(articleData);
