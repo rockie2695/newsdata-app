@@ -3,8 +3,6 @@ import { news } from "@/scripts/api";
 import { useNewsStore } from "@/stores/news-store";
 import { NewsResponse, TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { differenceInDays, format, formatDistanceToNow } from "date-fns";
-import { zhHK } from "date-fns/locale/zh-HK";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,25 +15,8 @@ import {
 } from "react-native";
 import MainSlide from "./MainSlide";
 import RowSwitch from "./RowSwitch";
-
-const formatDate = (dateString: string, language: string) => {
-  const date = new Date(dateString);
-  const now = new Date();
-
-  // If the date is more than 1 day ago, show full date and time
-  if (differenceInDays(now, date) >= 1) {
-    if (language === "zh-HK") {
-      return format(date, "yyyy年MM月dd日 HH:mm");
-    }
-    return format(date, "MMM d, yyyy h:mm a");
-  }
-
-  // Otherwise, show relative time
-  return formatDistanceToNow(date, {
-    addSuffix: true,
-    locale: language === "zh-HK" ? zhHK : undefined,
-  });
-};
+import { formatDate } from "@/scripts/common";
+import { router } from "expo-router";
 
 export default function CategoryVFlatList() {
   const { t, i18n } = useTranslation();
@@ -70,7 +51,16 @@ export default function CategoryVFlatList() {
     );
   const renderItem = ({ item, index }: { item: TnewsSlide; index: number }) => {
     return (
-      <Pressable onPress={() => console.log(item)} className={"mt-4 mx-4"}>
+      <Pressable
+        onPress={() =>
+          router.push(
+            `/news/article/${
+              category !== "home" ? category : item.category[0]
+            }/${item.id}`
+          )
+        }
+        className={"mt-4 mx-4"}
+      >
         <View className="aspect-video relative rounded-2xl overflow-hidden">
           {isPending ? (
             <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
@@ -114,7 +104,7 @@ export default function CategoryVFlatList() {
           <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
         ) : (
           <Text className="text-sm text-gray-500 font-[NotoSansHK]">
-            {formatDate(item.pubdate, currentLanguage)}
+            {formatDate(item.pubdate, currentLanguage, true)}
           </Text>
         )}
       </Pressable>

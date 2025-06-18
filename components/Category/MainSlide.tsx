@@ -51,7 +51,6 @@ export default function MainSlide() {
   };
 
   const slideClicked = (item: TnewsSlide) => {
-    console.log(item);
     router.push(
       `/news/article/${category !== "home" ? category : item.category[0]}/${
         item.id

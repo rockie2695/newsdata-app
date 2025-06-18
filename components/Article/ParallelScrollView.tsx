@@ -25,7 +25,7 @@ const ParallaxScrollView = ({
           translateY: interpolate(
             scrollOffset.value,
             [-parallaxHeaderHeight, 0, parallaxHeaderHeight],
-            [-parallaxHeaderHeight / 2, 0, parallaxHeaderHeight * 0.75]
+            [-parallaxHeaderHeight / 2, 0, parallaxHeaderHeight * 0.5]
           ),
         },
         {

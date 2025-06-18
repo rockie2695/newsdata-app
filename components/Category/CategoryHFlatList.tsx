@@ -3,6 +3,7 @@ import { news } from "@/scripts/api";
 import { useNewsStore } from "@/stores/news-store";
 import { NewsResponse, TnewsData } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
@@ -13,7 +14,13 @@ import {
   View,
 } from "react-native";
 
-export default function CategoryHFlatList({ category }: { category: string }) {
+export default function CategoryHFlatList({
+  category,
+  needBackPage = false,
+}: {
+  category: string;
+  needBackPage?: boolean;
+}) {
   const { t } = useTranslation();
   const {
     isPending,
@@ -28,7 +35,12 @@ export default function CategoryHFlatList({ category }: { category: string }) {
   return (
     <View>
       <Pressable
-        onPress={() => setCategory(category)}
+        onPress={() => {
+          setCategory(category);
+          if (needBackPage) {
+            router.back();
+          }
+        }}
         className="flex flex-row items-center justify-between px-4"
       >
         <Text className="text-xl font-bold font-[NotoSansHK]">
@@ -39,7 +51,12 @@ export default function CategoryHFlatList({ category }: { category: string }) {
             name="arrow-forward"
             size={24}
             color="black"
-            onPress={() => setCategory(category)}
+            onPress={() => {
+              setCategory(category);
+              if (needBackPage) {
+                router.back();
+              }
+            }}
           />
         </View>
       </Pressable>
@@ -62,7 +79,13 @@ export default function CategoryHFlatList({ category }: { category: string }) {
           data={newsData?.success || placeholderData} // mock data
           renderItem={({ item, index }) => (
             <Pressable
-              onPress={() => console.log(item)}
+              onPress={() =>
+                router.push(
+                  `/news/article/${
+                    category !== "home" ? category : item.category[0]
+                  }/${item.id}`
+                )
+              }
               style={{ width: screenWidth - 4 * 16 }}
               className={"ml-4" + (index === 5 ? " mr-4" : "")}
             >
