@@ -44,7 +44,7 @@
     "nativewind": "^4.1.23",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "react-i18next": "^15.5.2",
+    "react-i18next": "^15.5.3",
     "react-native": "0.79.3",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
@@ -53,9 +53,8 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "tailwindcss": "^3.4.17",
-    "zod": "^3.25.57",
-    "zustand": "^5.0.5",
-    "expo-sharing": "~13.1.5"
+    "zod": "^3.25.67",
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
