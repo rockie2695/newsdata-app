@@ -7,6 +7,8 @@ import { ArticleResponse } from "@/type/news";
 import { formatDate, replaceImageUrlToSingle } from "@/scripts/common";
 import { useTranslation } from "react-i18next";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import RemoteImage from "../RemoteImage/RemoteImage";
+
 export default function Article({
   category,
   id,
@@ -37,7 +39,10 @@ export default function Article({
 
   let articleArray: articlePOrFigure[] = [];
   const dataContent = articleData?.success?.content
-    ? articleData?.success?.content
+    ? articleData.success.content === "ONLY AVAILABLE IN PAID PLANS"
+      ? "<p>" + articleData?.success?.description +
+          "</p><p>ONLY AVAILABLE IN PAID PLANS</p>" || ""
+      : articleData.success.content
     : articleData?.success?.description || "";
   if (dataContent) {
     //<p>...</p><figure><img src="..." alt="..." ><figcaption>...</figcaption></figure>
@@ -149,12 +154,10 @@ export default function Article({
                     ) : null}
                     {item.type === "figure" ? (
                       <>
-                        <Image
-                          source={{
-                            uri: replaceImageUrlToSingle(item.src || ""),
-                          }}
-                          className="w-full h-full object-cover"
+                        <RemoteImage
+                          uri={replaceImageUrlToSingle(item.src || "")}
                           progressiveRenderingEnabled={true}
+                          maxWidth={screenWidth - 2 * 16}
                         />
                         {item.figcaption ? (
                           <Text className="text-sm font-[NotoSansHK]">
@@ -182,7 +185,11 @@ export default function Article({
             <View className="border-t border-gray-300 gap-6 pt-4 flex flex-col ">
               {(articleData?.success?.category || []).length > 0 &&
                 (articleData?.success?.category || []).map((item: string) => (
-                  <CategoryHFlatList key={item} category={item} needBackPage={true}/>
+                  <CategoryHFlatList
+                    key={item}
+                    category={item}
+                    needBackPage={true}
+                  />
                 ))}
             </View>
           </View>
