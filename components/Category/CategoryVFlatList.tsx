@@ -86,7 +86,11 @@ export default function CategoryVFlatList() {
           ) : (
             <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
               {item.source_id}
-              {item.creator ? " | " + item.creator : ""}
+              {item.creator &&
+              item.creator.length > 0 &&
+              item.creator[0] !== "auto_generator"
+                ? " | " + item.creator.map((creator) => creator).join(" ")
+                : ""}
             </Text>
           )}
         </View>

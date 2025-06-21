@@ -14,6 +14,9 @@ const resources = {
       technology: "Technology",
       sports: "Sports",
       details: "Details",
+      originalLink: "Original Link",
+      share: "Share",
+      on: "On",
     },
   },
   "zh-HK": {
@@ -25,6 +28,9 @@ const resources = {
       technology: "科技",
       sports: "體育",
       details: "詳情",
+      originalLink: "原文連結",
+      share: "分享",
+      on: "在",
     },
   },
 };

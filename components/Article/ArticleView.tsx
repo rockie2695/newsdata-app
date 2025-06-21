@@ -1,5 +1,12 @@
 import { useFetchReactQuery } from "@/hook/useReactQuery";
-import { Image, Text, useWindowDimensions, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  Text,
+  useWindowDimensions,
+  View,
+  Share,
+} from "react-native";
 import { article } from "@/scripts/api";
 import ParallaxScrollView from "./ParallelScrollView";
 import CategoryHFlatList from "../Category/CategoryHFlatList";
@@ -8,6 +15,42 @@ import { formatDate, replaceImageUrlToSingle } from "@/scripts/common";
 import { useTranslation } from "react-i18next";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import RemoteImage from "../RemoteImage/RemoteImage";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import * as Linking from "expo-linking";
+import { useRouter } from "expo-router";
+
+const openLink = async (url: string) => {
+  // Check if the device can open the URL
+  const canOpen = await Linking.canOpenURL(url);
+
+  if (canOpen) {
+    // Open the URL in the default browser
+    await Linking.openURL(url);
+  } else {
+    console.error("Cannot open URL:", url);
+  }
+};
+
+const onShare = async (url: string, message: string) => {
+  try {
+    const result = await Share.share({
+      url,
+      message,
+    });
+    if (result.action === Share.sharedAction) {
+      if (result.activityType) {
+        // shared with activity type of result.activityType
+      } else {
+        // shared
+      }
+    } else if (result.action === Share.dismissedAction) {
+      // dismissed
+    }
+  } catch (error: any) {
+    //Alert.alert(error.message);
+    console.error(error.message);
+  }
+};
 
 export default function Article({
   category,
@@ -23,11 +66,11 @@ export default function Article({
   } = useFetchReactQuery<ArticleResponse>(["article", category, id], () =>
     fetch(article(category, id)).then((res) => res.json())
   );
-  console.log(articleData);
   const screenWidth = useWindowDimensions().width || 300;
   const imageHeight = screenWidth * (9 / 16);
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const currentLanguage = i18n.language;
+  const router = useRouter();
 
   type articlePOrFigure = {
     type: "p" | "figure";
@@ -38,12 +81,23 @@ export default function Article({
   };
 
   let articleArray: articlePOrFigure[] = [];
-  const dataContent = articleData?.success?.content
-    ? articleData.success.content === "ONLY AVAILABLE IN PAID PLANS"
-      ? "<p>" + articleData?.success?.description +
-          "</p><p>ONLY AVAILABLE IN PAID PLANS</p>" || ""
-      : articleData.success.content
-    : articleData?.success?.description || "";
+  let dataContent = "";
+  if (articleData?.success?.content) {
+    dataContent = articleData.success.content;
+  } else if (articleData?.success?.description) {
+    dataContent = articleData.success.description;
+  }
+  if (
+    articleData?.success?.content &&
+    articleData?.success?.description &&
+    dataContent === "ONLY AVAILABLE IN PAID PLANS"
+  ) {
+    dataContent =
+      "<p>" +
+      articleData?.success?.description +
+      "</p><p>ONLY AVAILABLE IN PAID PLANS</p>";
+  }
+
   if (dataContent) {
     //<p>...</p><figure><img src="..." alt="..." ><figcaption>...</figcaption></figure>
     const articlePara = dataContent.split(/<\/\p>|<\/figure>|<figcaption>/);
@@ -84,6 +138,12 @@ export default function Article({
   }
   return (
     <View style={{ flex: 1 }}>
+      <Pressable
+        onPress={() => router.back()}
+        className="absolute top-4 left-4 z-50 shadow-lg bg-white rounded-full p-2"
+      >
+        <MaterialIcons name="arrow-back" size={24} color="black" />
+      </Pressable>
       <ParallaxScrollView
         parallaxHeaderContent={
           <View className="aspect-video  w-full">
@@ -113,12 +173,27 @@ export default function Article({
           <View className="mx-4">
             {isPending ? (
               <>
-                <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
-                <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+                <View className="mt-2 w-full h-[28px] bg-gray-300 rounded-2xl animate-pulse" />
+                <View className="mt-2 w-[50%] h-[28px] bg-gray-300 rounded-2xl animate-pulse" />
               </>
             ) : (
               <Text className="text-xl font-bold font-[NotoSansHK]">
                 {articleData?.success?.title}
+              </Text>
+            )}
+            {isPending ? (
+              <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
+            ) : (
+              <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+                {articleData?.success?.source_id}
+                {articleData?.success?.creator &&
+                articleData.success.creator.length > 0 &&
+                articleData.success.creator[0] !== "auto_generator"
+                  ? " | " +
+                    articleData?.success?.creator
+                      .map((creator) => creator)
+                      .join(" ")
+                  : ""}
               </Text>
             )}
             {isPending ? (
@@ -170,6 +245,72 @@ export default function Article({
                 ))}
               </View>
             ) : null}
+
+            {isPending
+              ? null
+              : (articleData?.success?.keywords || []).length > 0 && (
+                  <View className="mt-4 gap-2 flex flex-row">
+                    {articleData?.success?.keywords?.map((keyword, index) => (
+                      <Text key={index} className="text-sm font-[NotoSansHK]">
+                        #{keyword}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+
+            {isPending ? (
+              <View className="mt-4 gap-4 flex flex-row">
+                <View className="flex-1 flex flex-row gap-2 items-center justify-center">
+                  <FontAwesome5 name="link" size={20} color="#06b6d4" />
+                  <Text className="text-cyan-500 text-base">
+                    {t("originalLink")}
+                  </Text>
+                </View>
+                <View className="flex-1 flex flex-row gap-2 items-center justify-center">
+                  <FontAwesome5 name="share-alt" size={20} color="#06b6d4" />
+                  <Text className="text-cyan-500 text-base">{t("share")}</Text>
+                </View>
+              </View>
+            ) : (
+              <View className="mt-4 gap-4 flex flex-row">
+                <Pressable
+                  className="flex-1 flex flex-row gap-2 items-center justify-center"
+                  onPress={() => {
+                    openLink(articleData?.success?.link || "");
+                  }}
+                >
+                  <FontAwesome5 name="link" size={20} color="#06b6d4" />
+                  <Text className="text-cyan-500 text-base">
+                    {t("originalLink")}
+                  </Text>
+                </Pressable>
+                <Pressable
+                  className="flex-1 flex flex-row gap-2 items-center justify-center"
+                  onPress={() => {
+                    const link =
+                      "https://newsdata-two.vercel.app/" +
+                      (i18n.language === "en" ? "en" : "zh-hk") +
+                      "/category/" +
+                      articleData?.success?.category[0] +
+                      "/article/" +
+                      articleData?.success?.id +
+                      "/";
+                    onShare(
+                      link,
+                      articleData?.success?.title +
+                        " " +
+                        t("on") +
+                        " NewsData:" +
+                        " " +
+                        link
+                    );
+                  }}
+                >
+                  <FontAwesome5 name="share-alt" size={20} color="#06b6d4" />
+                  <Text className="text-cyan-500 text-base">{t("share")}</Text>
+                </Pressable>
+              </View>
+            )}
 
             {error && (
               <View className="mt-4 flex flex-col items-center">

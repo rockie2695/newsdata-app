@@ -17,7 +17,7 @@ export default function Index() {
           <MainSlide />
           <View className="flex flex-col gap-6 py-6">
             {category === "home" &&
-              ["top", "business", "entertainment", "sports", "technology"].map(
+              ["top", "business", "entertainment", "technology", "sports"].map(
                 (item) => <CategoryHFlatList key={item} category={item} />
               )}
           </View>
