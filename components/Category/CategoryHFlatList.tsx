@@ -1,18 +1,18 @@
 import { useFetchReactQuery } from "@/hook/useReactQuery";
 import { news } from "@/scripts/api";
 import { useNewsStore } from "@/stores/news-store";
-import { NewsResponse, TnewsData } from "@/type/news";
+import { NewsResponse, TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import {
   FlatList,
-  Image,
   Pressable,
   Text,
   useWindowDimensions,
   View,
 } from "react-native";
+import CategoryHFlatItem from "./CategoryHFlatItem";
 
 export default function CategoryHFlatList({
   category,
@@ -78,61 +78,13 @@ export default function CategoryHFlatList({
           className="mt-4 min-w-full"
           data={newsData?.success || placeholderData} // mock data
           renderItem={({ item, index }) => (
-            <Pressable
-              onPress={() =>
-                router.push(
-                  `/news/article/${
-                    category !== "home" ? category : item.category[0]
-                  }/${item.id}`
-                )
-              }
-              style={{ width: screenWidth - 4 * 16 }}
-              className={"ml-4" + (index === 5 ? " mr-4" : "")}
-            >
-              <View className="aspect-video relative rounded-2xl overflow-hidden">
-                {isPending ? (
-                  <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
-                ) : null}
-                {!isPending && item.image_url ? (
-                  <Image
-                    source={{ uri: item.image_url }}
-                    className="w-full h-full object-cover"
-                    progressiveRenderingEnabled={true}
-                  />
-                ) : null}
-                {!isPending && !item.image_url ? (
-                  <>
-                    <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
-                    <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
-                      No Image
-                    </Text>
-                  </>
-                ) : null}
-
-                {isPending ? (
-                  <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
-                ) : (
-                  <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
-                    {item.source_id}
-                    {item.creator &&
-                    item.creator.length > 0 &&
-                    item.creator[0] !== "auto_generator"
-                      ? " | " + item.creator.map((creator) => creator).join(" ")
-                      : ""}
-                  </Text>
-                )}
-              </View>
-              {isPending ? (
-                <>
-                  <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
-                  <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
-                </>
-              ) : (
-                <Text className="text-lg mt-2 line-clamp-2 font-[NotoSansHK]">
-                  {item.title}
-                </Text>
-              )}
-            </Pressable>
+            <CategoryHFlatItem
+              item={item}
+              index={index}
+              category={category}
+              isPending={isPending}
+              screenWidth={screenWidth}
+            />
           )}
           keyExtractor={(item) => item.id.toString()}
         />
@@ -141,7 +93,7 @@ export default function CategoryHFlatList({
   );
 }
 
-const placeholderData: TnewsData[] = Array(6)
+const placeholderData: TnewsSlide[] = Array(6)
   .fill(0)
   .map((_, i) => ({
     id: i + 1,

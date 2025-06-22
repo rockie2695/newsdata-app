@@ -2,9 +2,11 @@ import TabBarIcon from "@/components/BottomTabBar/TabBarIcon";
 import { Tabs } from "expo-router";
 import { Pressable, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useTranslation } from "react-i18next";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   return (
     <Tabs
       screenOptions={{
@@ -30,7 +32,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="news"
         options={{
-          title: "News",
+          title: t("news"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="newspaper" />
           ),
@@ -41,7 +43,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="search"
         options={{
-          title: "Search",
+          title: t("search"),
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon focused={focused} color={color} iconName="search" />
           ),

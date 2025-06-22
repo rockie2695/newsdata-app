@@ -17,7 +17,7 @@ export default function Index() {
         <ScrollView>
           {/*  stickyHeaderIndices={[0]} */}
           <MainSlide />
-          <View className="flex flex-col gap-6 py-6">
+          <View className="flex flex-col gap-6 py-6 bg-white">
             {category === "home" &&
               ["top", "business", "entertainment", "technology", "sports"].map(
                 (item) => <CategoryHFlatList key={item} category={item} />

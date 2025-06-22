@@ -17,6 +17,9 @@ const resources = {
       originalLink: "Original Link",
       share: "Share",
       on: "On",
+      search: "Search",
+      searchPlaceholder: "Search (comma can split words)",
+      news: "News",
     },
   },
   "zh-HK": {
@@ -31,6 +34,9 @@ const resources = {
       originalLink: "原文連結",
       share: "分享",
       on: "在",
+      search: "搜尋",
+      searchPlaceholder: "搜尋 (逗號可以分隔單字)",
+      news: "新聞",
     },
   },
 };

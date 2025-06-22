@@ -1,27 +1,29 @@
 import { useFetchInfReactQuery } from "@/hook/useInfReactQuery";
-import { news } from "@/scripts/api";
-import { useNewsStore } from "@/stores/news-store";
+import { search as searchApi } from "@/scripts/api";
 import { NewsResponse, TnewsSlide } from "@/type/news";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
-import MainSlide from "./MainSlide";
 import RowSwitch from "../RowSwitch/RowSwitch";
 import NewsVFlatList from "../News/NewsVFlatList";
 
-export default function CategoryVFlatList() {
+export default function CategoryVFlatList({
+  searchParam,
+}: {
+  searchParam: string;
+}) {
   const { t } = useTranslation();
-
-  const { category } = useNewsStore();
 
   const { isPending, error, data, fetchNextPage, isFetchingNextPage } =
     useFetchInfReactQuery<TnewsSlide[]>(
-      ["news", category],
+      ["search", searchParam],
       async ({ pageParam }) => {
         let res: Response;
         if (pageParam.length > 0 && pageParam[0] > 0 && pageParam[1]) {
-          res = await fetch(news(category, 10, pageParam[0], pageParam[1]));
+          res = await fetch(
+            searchApi(searchParam, 10, pageParam[0], pageParam[1])
+          );
         } else {
-          res = await fetch(news(category, 10));
+          res = await fetch(searchApi(searchParam, 10));
         }
         const data: NewsResponse = await res.json();
         if (!data?.success) {
@@ -35,10 +37,9 @@ export default function CategoryVFlatList() {
     <NewsVFlatList
       ListHeaderComponent={
         <>
-          <MainSlide />
           <View className="mx-4 mt-6 h-[40px] flex flex-row items-center justify-between">
             <Text className="text-xl font-bold font-[NotoSansHK]">
-              {t("details")}
+              {t("search")}
             </Text>
             <View className="flex flex-row items-center">
               <RowSwitch />

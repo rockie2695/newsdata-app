@@ -34,3 +34,21 @@ export function article(category: string, id: string) {
     id
   );
 }
+
+export function search(
+  search: string,
+  limit: number,
+  lastId?: number,
+  dateTime?: string
+) {
+  return (
+    (process.env.EXPO_PUBLIC_API_LINK || "") +
+    "/api/newsdata/search?inputValue=" +
+    search +
+    "&limit=" +
+    limit +
+    "&category=top,entertainment,business,technology,sports" +
+    (lastId ? "&lastId=" + lastId : "") +
+    (dateTime ? "&dateTime=" + dateTime : "")
+  );
+}

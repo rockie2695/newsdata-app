@@ -177,14 +177,17 @@ export default function Article({
                 <View className="mt-2 w-[50%] h-[28px] bg-gray-300 rounded-2xl animate-pulse" />
               </>
             ) : (
-              <Text className="text-xl font-bold font-[NotoSansHK]">
+              <Text className="text-xl font-bold font-[NotoSansHK]" selectable>
                 {articleData?.success?.title}
               </Text>
             )}
             {isPending ? (
               <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
             ) : (
-              <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+              <Text
+                className="text-sm text-gray-500 font-[NotoSansHK]"
+                selectable
+              >
                 {articleData?.success?.source_id}
                 {articleData?.success?.creator &&
                 articleData.success.creator.length > 0 &&
@@ -199,7 +202,10 @@ export default function Article({
             {isPending ? (
               <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
             ) : (
-              <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+              <Text
+                className="text-sm text-gray-500 font-[NotoSansHK]"
+                selectable
+              >
                 {formatDate(
                   articleData?.success?.pubdate || "",
                   currentLanguage,
@@ -223,7 +229,7 @@ export default function Article({
                 {articleArray.map((item, index) => (
                   <View key={index}>
                     {item.type === "p" ? (
-                      <Text className="text-lg font-[NotoSansHK]">
+                      <Text className="text-lg font-[NotoSansHK]" selectable>
                         {item.content}
                       </Text>
                     ) : null}
@@ -251,7 +257,11 @@ export default function Article({
               : (articleData?.success?.keywords || []).length > 0 && (
                   <View className="mt-4 gap-2 flex flex-row">
                     {articleData?.success?.keywords?.map((keyword, index) => (
-                      <Text key={index} className="text-sm font-[NotoSansHK]">
+                      <Text
+                        key={index}
+                        className="text-sm font-[NotoSansHK]"
+                        selectable
+                      >
                         #{keyword}
                       </Text>
                     ))}
