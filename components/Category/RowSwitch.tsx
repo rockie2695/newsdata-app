@@ -1,10 +1,12 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Animated, Easing, Pressable, View } from "react-native";
+import { useNewsStore } from "../../stores/news-store";
 
 export default function RowSwitch() {
-  const [isRow, setIsRow] = useState(false);
-  const toggleSwitch = () => setIsRow((previousState) => !previousState);
+  const { isRow, setIsRow } = useNewsStore();
+  const toggleSwitch = () =>
+    setIsRow((previousState: boolean) => !previousState);
 
   // Animation value for the thumb
   const thumbPosition = useRef(new Animated.Value(0)).current;

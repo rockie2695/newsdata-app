@@ -29,11 +29,18 @@ import { create } from "zustand";
 interface NewsStore {
   category: string;
   setCategory: (category: string) => void;
+  isRow: boolean;
+  setIsRow: (isRow: boolean | ((prev: boolean) => boolean)) => void;
 }
 
 const useNewsStore = create<NewsStore>()((set) => ({
   category: "home",
   setCategory: (category: string) => set(() => ({ category })),
+  isRow: false,
+  setIsRow: (isRow) =>
+    set((state) => ({
+      isRow: typeof isRow === "function" ? isRow(state.isRow) : isRow,
+    })),
 }));
 
 export { useNewsStore };

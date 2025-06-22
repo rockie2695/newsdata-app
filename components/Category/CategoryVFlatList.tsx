@@ -23,7 +23,7 @@ export default function CategoryVFlatList() {
   const currentLanguage = i18n.language;
   const flatListRef = useRef<FlatList>(null);
 
-  const { category } = useNewsStore();
+  const { category, isRow } = useNewsStore();
 
   // Scroll to top when category changes
   useEffect(() => {
@@ -59,58 +59,138 @@ export default function CategoryVFlatList() {
             }/${item.id}`
           )
         }
-        className={"mt-4 mx-4"}
+        className={"mt-4 mx-4" + (isRow ? " flex-row gap-2" : "")}
       >
-        <View className="aspect-video relative rounded-2xl overflow-hidden">
-          {isPending ? (
-            <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
-          ) : null}
-          {!isPending && item.image_url ? (
-            <Image
-              source={{ uri: item.image_url }}
-              className="w-full h-full object-cover"
-              progressiveRenderingEnabled={true}
-            />
-          ) : null}
-          {!isPending && !item.image_url ? (
-            <>
-              <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
-              <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
-                No Image
-              </Text>
-            </>
-          ) : null}
-
-          {isPending ? (
-            <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
-          ) : (
-            <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
-              {item.source_id}
-              {item.creator &&
-              item.creator.length > 0 &&
-              item.creator[0] !== "auto_generator"
-                ? " | " + item.creator.map((creator) => creator).join(" ")
-                : ""}
-            </Text>
-          )}
-        </View>
-        {isPending ? (
+        {isRow ? (
           <>
-            <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
-            <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+            {isPending ? (
+              <View className="aspect-video relative rounded-2xl overflow-hidden w-[33%]">
+                <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
+              </View>
+            ) : null}
+            {!isPending && item.image_url ? (
+              <View className="aspect-video relative rounded-2xl overflow-hidden w-[33%]">
+                <Image
+                  source={{ uri: item.image_url }}
+                  className="w-full h-full object-cover"
+                  progressiveRenderingEnabled={true}
+                />
+              </View>
+            ) : null}
+            {/* {!isPending && !item.image_url ? (
+              <View className="aspect-video relative rounded-2xl overflow-hidden">
+                <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
+                <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
+                  No Image
+                </Text>
+              </View>
+            ) : null} */}
+
+            {/* {isPending ? (
+              <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
+            ) : (
+              <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
+                {item.source_id}
+                {item.creator &&
+                item.creator.length > 0 &&
+                item.creator[0] !== "auto_generator"
+                  ? " | " + item.creator.map((creator) => creator).join(" ")
+                  : ""}
+              </Text>
+            )} */}
+            <View
+              className={
+                "w-full" + (!isPending && item.image_url ? " w-[67%]" : "")
+              }
+            >
+              {isPending ? (
+                <>
+                  <View className="w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+                  <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+                </>
+              ) : (
+                <Text className="text-lg line-clamp-2 font-[NotoSansHK]">
+                  {item.title}
+                </Text>
+              )}
+              {isPending ? (
+                <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+              ) : (
+                <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+                  {item.source_id}
+                  {item.creator &&
+                  item.creator.length > 0 &&
+                  item.creator[0] !== "auto_generator"
+                    ? " | " + item.creator.map((creator) => creator).join(" ")
+                    : ""}
+                </Text>
+              )}
+              {isPending ? (
+                <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+              ) : (
+                <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+                  {formatDate(item.pubdate, currentLanguage, true)}
+                </Text>
+              )}
+            </View>
           </>
-        ) : (
-          <Text className="text-lg mt-2 line-clamp-2 font-[NotoSansHK]">
-            {item.title}
-          </Text>
-        )}
-        {isPending ? (
-          <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
-        ) : (
-          <Text className="text-sm text-gray-500 font-[NotoSansHK]">
-            {formatDate(item.pubdate, currentLanguage, true)}
-          </Text>
-        )}
+        ) : null}
+        {!isRow ? (
+          <>
+            <View className="aspect-video relative rounded-2xl overflow-hidden">
+              {isPending ? (
+                <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
+              ) : null}
+              {!isPending && item.image_url ? (
+                <Image
+                  source={{ uri: item.image_url }}
+                  className="w-full h-full object-cover"
+                  progressiveRenderingEnabled={true}
+                />
+              ) : null}
+              {!isPending && !item.image_url ? (
+                <>
+                  <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
+                  <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
+                    No Image
+                  </Text>
+                </>
+              ) : null}
+
+              {isPending ? (
+                <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
+              ) : (
+                <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
+                  {item.source_id}
+                  {item.creator &&
+                  item.creator.length > 0 &&
+                  item.creator[0] !== "auto_generator"
+                    ? " | " + item.creator.map((creator) => creator).join(" ")
+                    : ""}
+                </Text>
+              )}
+            </View>
+            <View>
+              {isPending ? (
+                <>
+                  <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+                  <View className="mt-2 w-[50%] h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+                </>
+              ) : (
+                <Text className="text-lg mt-2 line-clamp-2 font-[NotoSansHK]">
+                  {item.title}
+                </Text>
+              )}
+              {isPending ? (
+                <View className="mt-2 w-full h-[24px] bg-gray-300 rounded-2xl animate-pulse" />
+              ) : (
+                <Text className="text-sm text-gray-500 font-[NotoSansHK]">
+                  {formatDate(item.pubdate, currentLanguage, true)}
+                </Text>
+              )}
+            </View>
+          </>
+        ) : null}
       </Pressable>
     );
   };
@@ -151,7 +231,8 @@ export default function CategoryVFlatList() {
                   {error?.message || "error"}
                 </Text>
               </View>
-            ) : (
+            ) : null}
+            {(isFetchingNextPage || isPending) && (
               <View className="py-4">
                 <ActivityIndicator size="large" color="#06b6d4" />
               </View>

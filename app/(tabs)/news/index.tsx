@@ -5,10 +5,11 @@ import TopTabFlatList from "@/components/Category/TopTabFlatList";
 import TopStatusBar from "@/components/TopStatusBar/TopStatusBar";
 import { useNewsStore } from "@/stores/news-store";
 import { ScrollView, StatusBar, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 export default function Index() {
   const { category } = useNewsStore();
   return (
-    <>
+    <SafeAreaView className="flex-1">
       <TopStatusBar />
       <TopTabFlatList />
       {category === "home" ? (
@@ -25,6 +26,6 @@ export default function Index() {
       ) : (
         <CategoryVFlatList />
       )}
-    </>
+    </SafeAreaView>
   );
 }
