@@ -324,14 +324,16 @@ export default function Article({
 
           <View className="py-4 ">
             <View className="border-t border-gray-300 gap-6 pt-4 flex flex-col ">
-              {(articleData?.success?.category || []).length > 0 &&
-                (articleData?.success?.category || []).map((item: string) => (
-                  <CategoryHFlatList
-                    key={item}
-                    category={item}
-                    needBackPage={true}
-                  />
-                ))}
+              {(articleData?.success?.category || [category]).length > 0 &&
+                (articleData?.success?.category || [category]).map(
+                  (item: string) => (
+                    <CategoryHFlatList
+                      key={item}
+                      category={item}
+                      needBackPage={true}
+                    />
+                  )
+                )}
             </View>
           </View>
         </View>

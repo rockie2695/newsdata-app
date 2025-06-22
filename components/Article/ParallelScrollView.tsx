@@ -19,21 +19,25 @@ const ParallaxScrollView = ({
   const scrollOffset = useScrollViewOffset(scrollRef);
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      scrollOffset.value,
+      [-parallaxHeaderHeight, 0, parallaxHeaderHeight],
+      [-parallaxHeaderHeight / 2, 0, parallaxHeaderHeight * 0.5]
+    );
+
+    const scale = interpolate(
+      scrollOffset.value,
+      [-parallaxHeaderHeight, 0, parallaxHeaderHeight],
+      [1, 1, 1.2]
+    );
+
     return {
       transform: [
         {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-parallaxHeaderHeight, 0, parallaxHeaderHeight],
-            [-parallaxHeaderHeight / 2, 0, parallaxHeaderHeight * 0.5]
-          ),
+          translateY: translateY,
         },
         {
-          scale: interpolate(
-            scrollOffset.value,
-            [-parallaxHeaderHeight, 0, parallaxHeaderHeight],
-            [2, 1, 1]
-          ),
+          scale: scale,
         },
       ],
     };

@@ -59,17 +59,17 @@ export default function CategoryVFlatList() {
             }/${item.id}`
           )
         }
-        className={"mt-4 mx-4" + (isRow ? " flex-row gap-2" : "")}
+        className={"mt-4 mx-4" + (isRow ? " flex-row gap-2 flex" : "")}
       >
         {isRow ? (
           <>
             {isPending ? (
-              <View className="aspect-video relative rounded-2xl overflow-hidden w-[33%]">
+              <View className="aspect-video relative rounded-2xl overflow-hidden w-full">
                 <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl animate-pulse" />
               </View>
             ) : null}
             {!isPending && item.image_url ? (
-              <View className="aspect-video relative rounded-2xl overflow-hidden w-[33%]">
+              <View className="aspect-video relative rounded-2xl overflow-hidden w-full flex-1">
                 <Image
                   source={{ uri: item.image_url }}
                   className="w-full h-full object-cover"
@@ -77,30 +77,10 @@ export default function CategoryVFlatList() {
                 />
               </View>
             ) : null}
-            {/* {!isPending && !item.image_url ? (
-              <View className="aspect-video relative rounded-2xl overflow-hidden">
-                <View className="w-full h-full bg-gray-200 border border-gray-300 rounded-2xl" />
-                <Text className="text-lg font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-[NotoSansHK]">
-                  No Image
-                </Text>
-              </View>
-            ) : null} */}
-
-            {/* {isPending ? (
-              <View className="absolute bottom-0 left-0 px-2 py-[2px] w-[33%] h-[24px] bg-gray-500/50 rounded-tr-2xl animate-pulse" />
-            ) : (
-              <Text className="text-sm text-center absolute bottom-0 left-0 px-2 py-[2px] bg-gray-500/50 text-white rounded-tr-2xl font-[NotoSansHK]">
-                {item.source_id}
-                {item.creator &&
-                item.creator.length > 0 &&
-                item.creator[0] !== "auto_generator"
-                  ? " | " + item.creator.map((creator) => creator).join(" ")
-                  : ""}
-              </Text>
-            )} */}
             <View
               className={
-                "w-full" + (!isPending && item.image_url ? " w-[67%]" : "")
+                "w-full" +
+                ((!isPending && item.image_url) || isPending ? " flex-[2]" : "")
               }
             >
               {isPending ? (

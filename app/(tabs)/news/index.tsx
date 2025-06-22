@@ -4,12 +4,13 @@ import MainSlide from "@/components/Category/MainSlide";
 import TopTabFlatList from "@/components/Category/TopTabFlatList";
 import TopStatusBar from "@/components/TopStatusBar/TopStatusBar";
 import { useNewsStore } from "@/stores/news-store";
-import { ScrollView, StatusBar, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function Index() {
   const { category } = useNewsStore();
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView className="flex-1">
+    <View style={{ flex: 1, paddingTop: insets.top }}>
       <TopStatusBar />
       <TopTabFlatList />
       {category === "home" ? (
@@ -26,6 +27,6 @@ export default function Index() {
       ) : (
         <CategoryVFlatList />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
