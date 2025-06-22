@@ -16,9 +16,11 @@ import CategoryHFlatItem from "./CategoryHFlatItem";
 
 export default function CategoryHFlatList({
   category,
+  refreshing,
   needBackPage = false,
 }: {
   category: string;
+  refreshing: boolean;
   needBackPage?: boolean;
 }) {
   const { t } = useTranslation();
@@ -26,8 +28,13 @@ export default function CategoryHFlatList({
     isPending,
     error,
     data: newsData,
-  } = useFetchReactQuery<NewsResponse>(["category", category], () =>
-    fetch(news(category, 6)).then((res) => res.json() as Promise<NewsResponse>)
+  } = useFetchReactQuery<NewsResponse>(
+    ["category", category],
+    () =>
+      fetch(news(category, 6)).then(
+        (res) => res.json() as Promise<NewsResponse>
+      ),
+    !refreshing
   );
   const screenWidth = useWindowDimensions().width || 300;
   const { setCategory } = useNewsStore();

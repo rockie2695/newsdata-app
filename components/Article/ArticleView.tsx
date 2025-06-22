@@ -341,6 +341,7 @@ export default function Article({
                       key={item}
                       category={item}
                       needBackPage={true}
+                      refreshing={true}
                     />
                   )
                 )}

@@ -3,7 +3,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 
 export const useFetchInfReactQuery = <T,>(
   queryKey: string[],
-  queryFn: ({ pageParam }: { pageParam: any }) => Promise<T>
+  queryFn: ({ pageParam }: { pageParam: any }) => Promise<T>,
+  enabled = true
 ) => {
   const {
     data,
@@ -24,6 +25,7 @@ export const useFetchInfReactQuery = <T,>(
         (lastPage as TnewsSlide[]).at(-1)?.pubdate,
       ];
     },
+    enabled,
   });
 
   return {

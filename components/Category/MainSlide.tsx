@@ -18,14 +18,16 @@ import { useNewsStore } from "@/stores/news-store";
 import { router } from "expo-router";
 import { TnewsSlide } from "@/type/news";
 
-export default function MainSlide() {
+export default function MainSlide({ refreshing }: { refreshing: boolean }) {
   const { category } = useNewsStore();
   const {
     isPending,
     error,
     data: slidesData,
-  } = useFetchReactQuery(["slide", category], () =>
-    fetch(slides(category, 6)).then((res) => res.json())
+  } = useFetchReactQuery(
+    ["slide", category],
+    () => fetch(slides(category, 6)).then((res) => res.json()),
+    !refreshing
   );
   const flatListRef = useRef<FlatList>(null);
   const scrollX = useRef(new Animated.Value(0)).current;

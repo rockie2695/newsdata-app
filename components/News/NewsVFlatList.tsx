@@ -1,4 +1,3 @@
-
 import { useNewsStore } from "@/stores/news-store";
 import { TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -9,6 +8,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  RefreshControlProps,
   Text,
   View,
 } from "react-native";
@@ -27,6 +27,7 @@ export default function NewsVFlatList({
   data,
   fetchNextPage,
   isFetchingNextPage,
+  refreshControl,
 }: {
   ListHeaderComponent?: React.ReactElement | null;
   isPending: boolean;
@@ -38,6 +39,7 @@ export default function NewsVFlatList({
     InfiniteQueryObserverResult<InfiniteData<TnewsSlide[], unknown>, Error>
   >;
   isFetchingNextPage: boolean;
+  refreshControl: React.ReactElement<RefreshControlProps>;
 }) {
   const { t, i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -210,6 +212,7 @@ export default function NewsVFlatList({
             )}
           </>
         }
+        refreshControl={refreshControl}
       />
     </View>
   );
