@@ -1,7 +1,7 @@
 import { useNewsStore } from "@/stores/news-store";
 import { TnewsSlide } from "@/type/news";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -46,6 +46,7 @@ export default function NewsVFlatList({
   const flatListRef = useRef<FlatList>(null);
 
   const { category, isRow } = useNewsStore();
+  const [isShowLoading, setIsShowLoading] = useState(false);
 
   // Scroll to top when category changes
   useEffect(() => {
@@ -53,6 +54,14 @@ export default function NewsVFlatList({
       flatListRef.current.scrollToOffset({ offset: 0, animated: true });
     }
   }, [category]);
+
+  useEffect(() => {
+    if (isFetchingNextPage) {
+      setIsShowLoading(true);
+    } else {
+      setIsShowLoading(false);
+    }
+  }, [isFetchingNextPage]);
 
   const renderItem = ({ item, index }: { item: TnewsSlide; index: number }) => {
     return (
@@ -190,6 +199,7 @@ export default function NewsVFlatList({
         keyExtractor={(item) => item.id.toString()}
         onEndReached={() => {
           if (!isPending && !isFetchingNextPage) {
+            setIsShowLoading(true);
             fetchNextPage();
           }
         }}
@@ -205,7 +215,7 @@ export default function NewsVFlatList({
                 </Text>
               </View>
             ) : null}
-            {(isFetchingNextPage || isPending) && (
+            {isShowLoading && (
               <View className="py-4">
                 <ActivityIndicator size="large" color="#06b6d4" />
               </View>
