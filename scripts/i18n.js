@@ -20,6 +20,8 @@ const resources = {
       search: "Search",
       searchPlaceholder: "Search (comma can split words)",
       news: "News",
+      close: "Close",
+      action:"Action"
     },
   },
   "zh-HK": {
@@ -37,6 +39,8 @@ const resources = {
       search: "搜尋",
       searchPlaceholder: "搜尋 (逗號可以分隔單字)",
       news: "新聞",
+      close: "關閉",
+      action:"動作"
     },
   },
 };

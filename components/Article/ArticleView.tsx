@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   View,
   Share,
+  ScrollView,
 } from "react-native";
 import { article } from "@/scripts/api";
 import ParallaxScrollView from "./ParallelScrollView";
@@ -18,6 +19,8 @@ import RemoteImage from "../RemoteImage/RemoteImage";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import BottomModal from "../Modal/BottomModal";
 
 const openLink = async (url: string) => {
   // Check if the device can open the URL
@@ -66,6 +69,7 @@ export default function Article({
   } = useFetchReactQuery<ArticleResponse>(["article", category, id], () =>
     fetch(article(category, id)).then((res) => res.json())
   );
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const screenWidth = useWindowDimensions().width || 300;
   const imageHeight = screenWidth * (9 / 16);
   const { i18n, t } = useTranslation();
@@ -136,6 +140,23 @@ export default function Article({
       }
     });
   }
+  const pressOnOriginalLink = () => {
+    openLink(articleData?.success?.link || "");
+  };
+  const pressOnShare = () => {
+    const link =
+      "https://newsdata-two.vercel.app/" +
+      (i18n.language === "en" ? "en" : "zh-hk") +
+      "/category/" +
+      articleData?.success?.category[0] +
+      "/article/" +
+      articleData?.success?.id +
+      "/";
+    onShare(
+      link,
+      articleData?.success?.title + " " + t("on") + " NewsData:" + " " + link
+    );
+  };
   return (
     <View style={{ flex: 1 }}>
       <Pressable
@@ -181,38 +202,47 @@ export default function Article({
                 {articleData?.success?.title}
               </Text>
             )}
-            {isPending ? (
-              <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
-            ) : (
-              <Text
-                className="text-sm text-gray-500 font-[NotoSansHK]"
-                selectable
-              >
-                {articleData?.success?.source_id}
-                {articleData?.success?.creator &&
-                articleData.success.creator.length > 0 &&
-                articleData.success.creator[0] !== "auto_generator"
-                  ? " | " +
-                    articleData?.success?.creator
-                      .map((creator) => creator)
-                      .join(" ")
-                  : ""}
-              </Text>
-            )}
-            {isPending ? (
-              <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
-            ) : (
-              <Text
-                className="text-sm text-gray-500 font-[NotoSansHK]"
-                selectable
-              >
-                {formatDate(
-                  articleData?.success?.pubdate || "",
-                  currentLanguage,
-                  false
+            <View className="flex-row items-center gap-2">
+              <View className="grow">
+                {isPending ? (
+                  <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
+                ) : (
+                  <Text
+                    className="text-sm text-gray-500 font-[NotoSansHK]"
+                    selectable
+                  >
+                    {articleData?.success?.source_id}
+                    {articleData?.success?.creator &&
+                    articleData.success.creator.length > 0 &&
+                    articleData.success.creator[0] !== "auto_generator"
+                      ? " | " +
+                        articleData?.success?.creator
+                          .map((creator) => creator)
+                          .join(" ")
+                      : ""}
+                  </Text>
                 )}
-              </Text>
-            )}
+                {isPending ? (
+                  <View className="mt-2 w-[33%] h-[20px] bg-gray-300 rounded-2xl animate-pulse" />
+                ) : (
+                  <Text
+                    className="text-sm text-gray-500 font-[NotoSansHK]"
+                    selectable
+                  >
+                    {formatDate(
+                      articleData?.success?.pubdate || "",
+                      currentLanguage,
+                      false
+                    )}
+                  </Text>
+                )}
+              </View>
+              <View className="">
+                <Pressable onPress={() => setIsModalVisible(true)}>
+                  <MaterialIcons name="more-vert" size={24} color="#6b7280" />
+                </Pressable>
+              </View>
+            </View>
 
             {isPending ? (
               <>
@@ -285,9 +315,7 @@ export default function Article({
               <View className="mt-4 gap-4 flex flex-row">
                 <Pressable
                   className="flex-1 flex flex-row gap-2 items-center justify-center"
-                  onPress={() => {
-                    openLink(articleData?.success?.link || "");
-                  }}
+                  onPress={pressOnOriginalLink}
                 >
                   <FontAwesome5 name="link" size={20} color="#06b6d4" />
                   <Text className="text-cyan-500 text-base">
@@ -296,25 +324,7 @@ export default function Article({
                 </Pressable>
                 <Pressable
                   className="flex-1 flex flex-row gap-2 items-center justify-center"
-                  onPress={() => {
-                    const link =
-                      "https://newsdata-two.vercel.app/" +
-                      (i18n.language === "en" ? "en" : "zh-hk") +
-                      "/category/" +
-                      articleData?.success?.category[0] +
-                      "/article/" +
-                      articleData?.success?.id +
-                      "/";
-                    onShare(
-                      link,
-                      articleData?.success?.title +
-                        " " +
-                        t("on") +
-                        " NewsData:" +
-                        " " +
-                        link
-                    );
-                  }}
+                  onPress={pressOnShare}
                 >
                   <FontAwesome5 name="share-alt" size={20} color="#06b6d4" />
                   <Text className="text-cyan-500 text-base">{t("share")}</Text>
@@ -349,6 +359,32 @@ export default function Article({
           </View>
         </View>
       </ParallaxScrollView>
+      <BottomModal
+        isVisible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        title={t("action")}
+      >
+        <ScrollView>
+          <View className="flex flex-col gap-2">
+            <Pressable
+              className="flex flex-row gap-2 items-center justify-center"
+              onPress={pressOnOriginalLink}
+            >
+              <FontAwesome5 name="link" size={20} color="#06b6d4" />
+              <Text className="text-cyan-500 text-base">
+                {t("originalLink")}
+              </Text>
+            </Pressable>
+            <Pressable
+              className="flex flex-row gap-2 items-center justify-center"
+              onPress={pressOnShare}
+            >
+              <FontAwesome5 name="share-alt" size={20} color="#06b6d4" />
+              <Text className="text-cyan-500 text-base">{t("share")}</Text>
+            </Pressable>
+          </View>
+        </ScrollView>
+      </BottomModal>
     </View>
   );
 }
