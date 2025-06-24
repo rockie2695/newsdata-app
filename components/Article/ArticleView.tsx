@@ -364,23 +364,21 @@ export default function Article({
         onClose={() => setIsModalVisible(false)}
         title={t("action")}
       >
-        <ScrollView>
-          <View className="flex flex-col gap-2">
+        <ScrollView className="mt-4">
+          <View className="flex flex-col gap-4">
             <Pressable
               className="flex flex-row gap-2 items-center justify-center"
               onPress={pressOnOriginalLink}
             >
               <FontAwesome5 name="link" size={20} color="#06b6d4" />
-              <Text className="text-cyan-500 text-base">
-                {t("originalLink")}
-              </Text>
+              <Text className="text-cyan-500 text-lg">{t("originalLink")}</Text>
             </Pressable>
             <Pressable
               className="flex flex-row gap-2 items-center justify-center"
               onPress={pressOnShare}
             >
               <FontAwesome5 name="share-alt" size={20} color="#06b6d4" />
-              <Text className="text-cyan-500 text-base">{t("share")}</Text>
+              <Text className="text-cyan-500 text-lg">{t("share")}</Text>
             </Pressable>
           </View>
         </ScrollView>

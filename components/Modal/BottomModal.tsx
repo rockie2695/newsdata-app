@@ -1,7 +1,7 @@
-import { Modal, View, Text, Pressable, StyleSheet } from "react-native";
-import { PropsWithChildren } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { PropsWithChildren } from "react";
 import { useTranslation } from "react-i18next";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 type Props = PropsWithChildren<{
   isVisible: boolean;
@@ -19,10 +19,10 @@ export default function BottomModal({
   return (
     <View>
       <Modal
-        animationType="slide"
-        transparent={true}
+        animationType="fade"
         visible={isVisible}
         onRequestClose={onClose}
+        backdropColor="rgba(0, 0, 0, 0.1)"
       >
         <Pressable onPress={onClose} className="flex-1" />
         <View
@@ -33,14 +33,11 @@ export default function BottomModal({
             style={styles.titleContainer}
             className="border-b border-gray-200"
           >
-            <Text
-              style={styles.title}
-              className="text-cyan-500 text-lg font-[NotoSansHK]"
-            >
+            <Text className="text-cyan-500 text-xl font-[NotoSansHK] font-bold">
               {title}
             </Text>
           </View>
-          <View className="flex-1 mx-4 mt-2">{children}</View>
+          <View className="flex-1 mx-4">{children}</View>
           <Pressable
             onPress={onClose}
             className="flex-row mx-4 my-2 py-1 bg-cyan-500 items-center justify-center rounded-lg"
@@ -74,10 +71,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     textAlign: "center",
     justifyContent: "center",
-  },
-  title: {
-    color: "#000000",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
