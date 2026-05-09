@@ -145,7 +145,7 @@ export default function Article({
   };
   const pressOnShare = () => {
     const link =
-      "https://newsdata-two.vercel.app/" +
+      "https://newsdata-roan.vercel.app/" +
       (i18n.language === "en" ? "en" : "zh-hk") +
       "/category/" +
       articleData?.success?.category[0] +
